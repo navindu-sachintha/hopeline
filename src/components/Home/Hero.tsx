@@ -41,7 +41,7 @@ export const Hero = () => {
             {/* End Buttons */}
           </div>
           {/* Col */}
-          <div className="hidden lg:block relative ms-4">
+          <div className="hidden xl:block relative ms-4">
             <IconCloud iconSlugs={slugs}/>
           </div>
           {/* End Col */}
