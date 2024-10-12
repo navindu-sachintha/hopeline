@@ -20,7 +20,7 @@ export const Hero = () => {
   return (
     <>
       {/* Hero */}
-      <div className="container px-24 lg:px-32 py-12 lg:py-24">
+      <div className="container px-12 lg:px-32 py-24 lg:py-32">
         {/* Grid */}
         <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
           <div>
@@ -41,7 +41,7 @@ export const Hero = () => {
             {/* End Buttons */}
           </div>
           {/* Col */}
-          <div className="relative ms-4">
+          <div className="hidden lg:block relative ms-4">
             <IconCloud iconSlugs={slugs}/>
           </div>
           {/* End Col */}
