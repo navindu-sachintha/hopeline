@@ -1,6 +1,8 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import IconCloud from "@/components/ui/icon-cloud";
+import { useRouter } from "next/navigation";
 
 const slugs = [
   "whatsapp",
@@ -17,6 +19,7 @@ const slugs = [
   "googlemessages"
 ]
 export const Hero = () => {
+  const router = useRouter()
   return (
     <>
       {/* Hero */}
@@ -33,8 +36,12 @@ export const Hero = () => {
             </p>
             {/* Buttons */}
             <div className="mt-7 grid gap-3 w-full sm:inline-flex">
-              <Button size={"lg"}>Speak To Us</Button>
-              <Button variant={"outline"} size={"lg"}>
+              <Button
+                onClick={() => router.push("/report")}
+                size={"lg"}>Speak To Us</Button>
+              <Button
+                onClick={() => {router.push("/awareness")}}
+                variant={"outline"} size={"lg"}>
                 Get to know more
               </Button>
             </div>

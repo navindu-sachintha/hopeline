@@ -24,15 +24,15 @@ export default function Component() {
   const pathname = usePathname()
 
   return (
-    <div className="w-full px-2 py-2">
+    <div className="w-full px-2 py-2 z-[999]">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
+          <Button variant="ghost" className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent  md:hidden">
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="bg-transparent backdrop-blur-sm p-0">
+        <SheetContent side="left" className="bg-fuchsia-100 backdrop-blur-sm p-0">
           <nav className="flex flex-col space-y-2 p-4 pt-10">
             {navItems.map((item) => (
               <Link
@@ -40,10 +40,10 @@ export default function Component() {
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:bg-[#f5d0fe] rounded-full px-4 py-2",
+                  "text-sm  font-medium transition-colors hover:bg-[#f5d0fe] rounded-full px-4 py-2",
                   pathname === item.href
-                    ? "bg-[#f5d0fe] text-primary"
-                    : "text-muted-foreground"
+                    ? "bg-[#f5d0fe] text-black"
+                    : "text-black"
                 )}
               >
                 {item.name}
@@ -61,7 +61,7 @@ export default function Component() {
               "text-sm font-medium transition-colors hover:bg-fuchsia-200 rounded-full px-4 py-1",
               pathname === item.href
                 ? "bg-fuchsia-200 text-primary"
-                : "text-muted-foreground"
+                : "text-black"
             )}
           >
             {item.name}

@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import Header from "@/components/shared/Header";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Hopeline",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
       <Header/>
       {children}
+      <Toaster/>
       </body>
     </html>
   );
