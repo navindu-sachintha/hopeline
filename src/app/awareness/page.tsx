@@ -3,24 +3,26 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { client } from '@/sanity/lib/client'
 import {urlFor} from "@/sanity/lib/image";
+import { type Category } from "@/store/blogStore";
 
 async function getCategories() {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return client.fetch(`*[_type == "category"] | order(title asc) {
     _id,
     title,
     slug,
-    ogImage,
-    description
+    ogImage
   }`)
 }
 
 export default async function BlogPage() {
-  const categories = await getCategories()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const categories:Category[] = await getCategories()
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Blog Categories</h1>
+        <h1 className="text-3xl font-bold">Select What you need to know..</h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => (
@@ -43,7 +45,6 @@ export default async function BlogPage() {
                 </div>
                 <div className="p-6">
                   <h2 className="text-xl font-semibold mb-2">{category.title}</h2>
-                  <p className="text-gray-600">{category.description}</p>
                 </div>
               </div>
             </Link>

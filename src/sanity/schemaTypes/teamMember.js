@@ -7,7 +7,9 @@ const teamMember = {
       name: "name",
       title: "Name",
       type: "string",
-      validation: (Rule: { required: () => any }) => Rule.required(),
+      validation: (/** @type {{ required: () => any; }} */ Rule) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        Rule.required(),
     },
     {
       name: "slug",
@@ -17,7 +19,9 @@ const teamMember = {
         source: "name",
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (/** @type {{ required: () => any; }} */ Rule) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        Rule.required(),
     },
     {
       name: "image",
@@ -26,13 +30,17 @@ const teamMember = {
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (/** @type {{ required: () => any; }} */ Rule) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        Rule.required(),
     },
     {
       name: "bio",
       title: "Bio",
       type: "text",
-      validation: (Rule) => Rule.required(),
+      validation: (/** @type {{ required: () => any; }} */ Rule) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        Rule.required(),
     },
     {
       name: "socialLinks",
@@ -58,7 +66,9 @@ const teamMember = {
           { title: "Author", value: "author" },
         ],
       },
-      validation: (Rule) => Rule.required(),
+      validation: (/** @type {{ required: () => any; }} */ Rule) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        Rule.required(),
     },
   ],
   preview: {

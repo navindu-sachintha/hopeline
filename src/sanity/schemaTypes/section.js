@@ -10,17 +10,20 @@ const Category = {
       options: {
         source: "tagname",
         unique: true,
-        slugify: (input: any) => {
+        slugify: (/** @type {string} */ input) => {
           return input
             .toLowerCase()
             .replace(/\s+/g, "-")
             .replace(/[^\w-]+/g, "");
         },
       },
-      validation: (Rule: any) =>
-        Rule.custom((fields: any) => {
+      validation: (/** @type {{ custom: (arg0: (fields: any) => true | "Tags must be lowercase and not be included space") => any; }} */ Rule) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        Rule.custom((fields) => {
           if (
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
             fields !== fields.toLowerCase() ||
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
             fields.split(" ").includes("")
           ) {
             return "Tags must be lowercase and not be included space";

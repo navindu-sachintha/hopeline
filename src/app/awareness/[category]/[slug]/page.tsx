@@ -2,9 +2,11 @@ import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { client } from '@/sanity/lib/client'
 import {urlFor} from '@/sanity/lib/image'
-import { BackButton, Breadcrumbs } from "@/components/shared";
+import { BackButton } from "@/components/shared";
+import { type BlogPost } from "@/store/blogStore";
 
 async function getPost(slug: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return client.fetch(`*[_type == "post" && slug.current == $slug && approved == true][0] {
     title,
     mainImage,
@@ -23,7 +25,8 @@ async function getPost(slug: string) {
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const post:BlogPost = await getPost(params.slug)
 
   if (!post) {
     return <div>Post not found</div>
@@ -66,11 +69,13 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <div>
             <p className="font-semibold">{post.author.name}</p>
             <p className="text-gray-600">
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument */}
               {new Date(post.publishedAt).toLocaleDateString()}
             </p>
           </div>
         </div>
         <div className="prose max-w-none">
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <PortableText value={post.content} />
         </div>
       </article>

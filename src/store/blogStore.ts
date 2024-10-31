@@ -2,19 +2,22 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { client } from '@/sanity/lib/client'
 
-interface Category {
-  _id: string
-  title: string
-  slug: string
+export interface Category {
+  _id: string;
+  title: string;
+  ogImage: string;
+  slug: {current: string };
 }
 
-interface BlogPost {
-  _id: string
-  title: string
-  slug: string
-  mainImage: any
-  publishedAt: string
-  category: { _ref: string }
+export interface BlogPost {
+  _id: string;
+  title: string;
+  author: {name: string,image:string};
+  content:never;
+  slug: {current: string };
+  mainImage: string;
+  publishedAt: string;
+  category: { _ref: string };
 }
 
 interface BlogState {
@@ -31,15 +34,18 @@ export const useBlogStore = create<BlogState>()(
       categories: [],
       posts: {},
       fetchCategories: async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const categories = await client.fetch(`*[_type == "category"] | order(title asc) {
           _id,
           title,
           slug
         }`)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         set({ categories })
       },
       fetchPosts: async (categoryId: string) => {
         if (get().posts[categoryId]) return
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const posts = await client.fetch(`*[_type == "post" && section._ref == $categoryId && approved == true] | order(publishedAt desc) {
           _id,
           title,
@@ -50,6 +56,7 @@ export const useBlogStore = create<BlogState>()(
           approved
         }`, { categoryId })
         console.log('Fetched posts:', posts)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         set(state => ({ posts: { ...state.posts, [categoryId]: posts } }))
       },
       clearStore: () => set({ categories: [], posts: {} })
