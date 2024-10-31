@@ -24,7 +24,7 @@ export default function Component() {
   const pathname = usePathname()
 
   return (
-    <div className="w-full px-2 py-2">
+    <div className="w-full px-2 py-2 z-[999]">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent  md:hidden">
