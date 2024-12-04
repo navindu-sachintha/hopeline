@@ -18,6 +18,7 @@ const SignUp = () => {
     const [password, setPassword] = React.useState('');
     const [pendingVerification, setPendingVerification] = React.useState(false);
     const [verificationCode, setVerificationCode] = React.useState('');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const [error, setError] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -45,6 +46,7 @@ const SignUp = () => {
             })
             setPendingVerification(true);
         }catch(e:any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             console.log(JSON.stringify(e));
             setError(e.errors[0].message);
         }
@@ -68,6 +70,7 @@ const SignUp = () => {
             }
         
         }catch(e:any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             console.log(JSON.stringify(e));
             setError(e.errors[0].message);
         }
