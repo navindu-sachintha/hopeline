@@ -115,7 +115,7 @@ const SignUp = () => {
                   onChange={(e) => {
                     setEmail(e.target.value);
                     if (!validateEmail(e.target.value) && e.target.value) {
-                      setError('Please use a valid NSBM email address (@nsbm.ac.lk)');
+                      setError('Please use a valid NSBM email address (@*.nsbm.ac.lk)');
                     } else {
                       setError('');
                     }
