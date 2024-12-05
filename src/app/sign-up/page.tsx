@@ -13,9 +13,11 @@ import { Button } from '@/components/ui/button'
 
 const SignUp = () => {
     const {isLoaded, signUp, setActive} = useSignUp();
+    const nsbmEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*nsbm\.ac\.lk$/;
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = React.useState('');
     const [pendingVerification, setPendingVerification] = React.useState(false);
     const [verificationCode, setVerificationCode] = React.useState('');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -23,6 +25,23 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
     const router = useRouter();
+
+    const validateEmail = (email: string) => {
+        return nsbmEmailRegex.test(email);
+    };
+    // validate password
+    const validatePasswords = (pass: string, confirmPass: string) => {
+        if (pass !== confirmPass) {
+          setError('Passwords do not match');
+          return false;
+        }
+        if (pass.length < 8) {
+          setError('Password must be at least 8 characters');
+          return false;
+        }
+        setError('');
+        return true;
+      };
 
     if (!isLoaded) {
         return <div>Loading...</div>;
@@ -93,7 +112,15 @@ const SignUp = () => {
                   type="email"
                   id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (!validateEmail(e.target.value) && e.target.value) {
+                      setError('Please use a valid NSBM email address (@nsbm.ac.lk)');
+                    } else {
+                      setError('');
+                    }
+                  }}
+                  placeholder="Enter your NSBM email"
                   required
                 />
               </div>
@@ -104,6 +131,7 @@ const SignUp = () => {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     value={password}
+                    placeholder='Enter your password'
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
@@ -120,12 +148,43 @@ const SignUp = () => {
                   </button>
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="relative">
+                    <Input
+                    type={showPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                        validatePasswords(password, e.target.value);
+                    }}
+                    placeholder="Confirm your password"
+                    required
+                    />
+                    <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2"
+                    >
+                    {showPassword ? (
+                        <EyeOffIcon className="h-4 w-4 text-gray-500" />
+                    ) : (
+                        <EyeIcon className="h-4 w-4 text-gray-500" />
+                    )}
+                    </button>
+                </div>
+                </div>
               {error && (
                 <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <Button type="submit" className="w-full">
+              <Button 
+                type="submit"
+                className="w-full"
+                disabled={!!error}
+                variant={error ? "secondary" : "default"}>
                 Sign Up
               </Button>
             </form>
