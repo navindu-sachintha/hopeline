@@ -1,6 +1,6 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
-import { WebhookEvent } from '@clerk/nextjs/server';
+import { type WebhookEvent } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 
 export async function POST(req:Request){
@@ -19,6 +19,7 @@ export async function POST(req:Request){
         return new Response('Missing required headers');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const payload = await req.json();
     const body = JSON.stringify(payload);
 

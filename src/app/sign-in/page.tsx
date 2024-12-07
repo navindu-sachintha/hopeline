@@ -55,7 +55,9 @@ export default function SignIn() {
         console.error(JSON.stringify(result, null, 2));
       }
     } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       console.error("error", err.errors[0].message);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       setError(err.errors[0].message);
     }
   }

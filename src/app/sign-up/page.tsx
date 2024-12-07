@@ -72,6 +72,7 @@ const SignUp = () => {
         }catch(e:any) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             console.log(JSON.stringify(e));
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
             setError(e.errors[0].message);
         }
     }
@@ -96,6 +97,7 @@ const SignUp = () => {
         }catch(e:any) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             console.log(JSON.stringify(e));
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
             setError(e.errors[0].message);
         }
     }
