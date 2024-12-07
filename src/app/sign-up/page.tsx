@@ -13,7 +13,10 @@ import { Button } from '@/components/ui/button'
 
 const SignUp = () => {
     const {isLoaded, signUp, setActive} = useSignUp();
+
+    // remove emailRegex after development
     const nsbmEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*nsbm\.ac\.lk$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     const [email, setEmail] = React.useState('');
     const [username, setUsername] = React.useState('');
@@ -28,7 +31,7 @@ const SignUp = () => {
     const router = useRouter();
 
     const validateEmail = (email: string) => {
-        return nsbmEmailRegex.test(email);
+        return emailRegex.test(email);
     };
     // validate password
     const validatePasswords = (pass: string, confirmPass: string) => {
