@@ -43,6 +43,7 @@
     "react-icon-cloud": "^4.1.4",
     "sanity": "3",
     "styled-components": "6",
+    "svix": "^1.43.0",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",

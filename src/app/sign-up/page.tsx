@@ -16,6 +16,7 @@ const SignUp = () => {
     const nsbmEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*nsbm\.ac\.lk$/;
 
     const [email, setEmail] = React.useState('');
+    const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [pendingVerification, setPendingVerification] = React.useState(false);
@@ -56,7 +57,8 @@ const SignUp = () => {
             // sign up user with clerk
             await signUp.create({
                 emailAddress: email,
-                password: password
+                password: password,
+                username:username
             })
 
             // set clerk verification
@@ -121,6 +123,17 @@ const SignUp = () => {
                     }
                   }}
                   placeholder="Enter your NSBM email"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  type="text"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter your username"
                   required
                 />
               </div>
