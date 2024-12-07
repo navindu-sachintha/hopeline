@@ -9,7 +9,7 @@ const ReportPage = () => {
   const router = useRouter();
   const {isFormVisible,toggleForm} = useAnonymousReportStore()
   const handleLoginRedirect = () => {
-    router.push('/auth/login')
+    router.push('/sign-in')
   }
   return(
     <div className="container px-12 lg:px-32 py-12 lg:py-20">
