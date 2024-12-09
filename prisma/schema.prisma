@@ -35,5 +35,5 @@ model Case {
   dateCreated DateTime   @default(now())
   dateUpdated DateTime   @updatedAt
   userId      String
-  status      CaseStatus
+  status      CaseStatus @default(NEW)
 }
