@@ -6,6 +6,7 @@ import { useFileUpload } from '@/hooks/useFileUpload';
 import { FileDropzone } from '../shared/FileDropZone';
 import { FileList } from '../shared/FileList';
 import { z } from 'zod';
+import axios from 'axios';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
@@ -52,7 +53,21 @@ export function CreateCaseForm() {
     setIsSubmitting(true);
     try {
         const values = getValues();
-        console.log('Submitting form', values);
+        const formData = new FormData()
+
+        Object.entries(values).forEach(([key,value]) => {
+            formData.append(key,value as string)
+        })
+
+        files.forEach((file) => {
+            formData.append('files', file)
+        })
+        const response = await axios.post('/api/case', formData,{
+            headers:{
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        console.log('Case created', response.data);
         setShowConfirmDialog(false);
         clearFiles(); //clear files
         reset(); //reset form
@@ -138,6 +153,70 @@ export function CreateCaseForm() {
                   </div>
                 )}
               />
+            </div>
+            <div className="space-y-4">
+                <h3 className="text-lg font-medium">Do you think the incident was connected to the following?</h3>
+                <Controller
+                    name='incidentConnection'
+                    control={control}
+                    render={({ field }) => (
+                        <div className="space-y-2">
+                            {['Race', 'Gender', 'Sexual Orientation', 'Religion', 'Disability', 'Age', 'Other',"Don't Know"].map((item) => (
+                                <div key={item} className="flex items-center space-x-2">
+                                <Checkbox
+                                    id={`incident-connection-${item.toLowerCase()}`}
+                                    checked={field.value.includes(item)}
+                                    onCheckedChange={(checked) => {
+                                    if (checked) {
+                                        field.onChange([...field.value, item])
+                                    } else {
+                                        field.onChange(field.value.filter((val: string) => val !== item))
+                                    }
+                                    }}
+                                />
+                                <Label htmlFor={`incident-connection-${item.toLowerCase()}`}>{item}</Label>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                />
+                {errors.incidentConnection && <p className="text-red-500">{errors.incidentConnection.message}</p>}
+            </div>
+            <div className="space-y-4">
+                <h3 className="text-lg font-medium">Your connection to the university:</h3>
+                <Controller
+                name="yourConnection"
+                control={control}
+                render={({ field }) => (
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value}>
+                    {['student', 'staff', 'visitor', 'other'].map((value) => (
+                        <div key={value} className="flex items-center space-x-2">
+                        <RadioGroupItem value={value} id={`your-connection-${value}`} />
+                        <Label htmlFor={`your-connection-${value}`}>{value}</Label>
+                        </div>
+                    ))}
+                    </RadioGroup>
+                )}
+                />
+                {errors.yourConnection && <p className="text-red-500">{errors.yourConnection.message}</p>}
+            </div>
+            <div className="space-y-4">
+                <h3 className="text-lg font-medium">Alleged perpetrator&apos;s connection to the university:</h3>
+                <Controller
+                name="allegedPerpetratorConnection"
+                control={control}
+                render={({ field }) => (
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value}>
+                    {['student', 'staff', 'visitor', 'other'].map((value) => (
+                        <div key={value} className="flex items-center space-x-2">
+                        <RadioGroupItem value={value} id={`alleged-perpetrator-connection-${value}`} />
+                        <Label htmlFor={`alleged-perpetrator-connection-${value}`}>{value}</Label>
+                        </div>
+                    ))}
+                    </RadioGroup>
+                )}
+                />
+                {errors.allegedPerpetratorConnection && <p className="text-red-500">{errors.allegedPerpetratorConnection.message}</p>}
             </div>
             <div className='space-y-4'>
                 <FileDropzone onDrop={addFiles} />

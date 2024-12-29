@@ -17,6 +17,12 @@ const config = {
         hostname: 'aqurocm.blob.core.windows.net',
       },
     ],
+  },
+  experimental:{
+    serverComponentsExternalPackages: ['tesseract.js'],
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./node_modules/**/*.wasm', './node_modules/**/*.proto']
+    }
   }
 };
 

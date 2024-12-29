@@ -28,12 +28,21 @@ model User {
 }
 
 model Case {
-  id          String     @id @default(uuid())
-  user        User       @relation(fields: [userId], references: [id])
-  title       String
-  description String
-  dateCreated DateTime   @default(now())
-  dateUpdated DateTime   @updatedAt
-  userId      String
-  status      CaseStatus @default(NEW)
+  id                  String     @id @default(uuid())
+  user                User       @relation(fields: [userId], references: [id])
+  title               String
+  incidentHappenedTo  String
+  description         String 
+  incidentDescription String
+  incidentConnection  String 
+  extractedString     String
+  reporterConnection  String
+  affectedConnection  String
+  perceptorConnection String
+  evidenceUrls        String[]
+  anonymous           Boolean    @default(false)
+  dateCreated         DateTime   @default(now())
+  dateUpdated         DateTime   @updatedAt
+  userId              String
+  status              CaseStatus @default(NEW)
 }
