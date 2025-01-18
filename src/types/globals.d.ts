@@ -2,7 +2,7 @@ export {}
 
 // Create a type for the roles
 export type Roles = 'admin' | 'user' | 'student_rep'
-export type Statuses = 'NEW' | 'PROCESSING' | 'REJECTED' | 'RESOLVED'
+export type Status = 'NEW' | 'PROCESSING' | 'REJECTED' | 'RESOLVED'
 
 declare global {
   interface CustomJwtSessionClaims {
@@ -22,8 +22,15 @@ declare global {
   interface Case {
     id: string;
     title:string;
+    incidentHappenedTo: string;
+    incidentDescription: string;
+    incidentConnection: string;
+    reporterConnection: string;
+    percepterConnection: string;
+    affectedConnection: string;
+    evidenceUrls: string[];
     description: string;
-    status: Statuses;
+    status: Status;
     category: string;
     dateCreated: string;
     dateUpdated: string;
