@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
 enum CaseStatus {
@@ -28,12 +29,22 @@ model User {
 }
 
 model Case {
-  id          String     @id @default(uuid())
-  user        User       @relation(fields: [userId], references: [id])
-  title       String
-  description String
-  dateCreated DateTime   @default(now())
-  dateUpdated DateTime   @updatedAt
-  userId      String
-  status      CaseStatus
+  id                  String     @id @default(uuid())
+  user                User       @relation(fields: [userId], references: [id])
+  title               String
+  incidentHappenedTo  String
+  description         String
+  incidentDescription String
+  incidentConnection  String
+  extractedString     String
+  reporterConnection  String
+  affectedConnection  String
+  perceptorConnection String
+  evidenceUrls        String[]
+  anonymous           Boolean    @default(false)
+  dateCreated         DateTime   @default(now())
+  dateUpdated         DateTime   @updatedAt
+  userId              String
+  status              CaseStatus @default(NEW)
+  toxic               Boolean    @default(false)
 }
