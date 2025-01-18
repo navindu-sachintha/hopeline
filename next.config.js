@@ -21,7 +21,7 @@ const config = {
   experimental:{
     serverComponentsExternalPackages: ['tesseract.js'],
     outputFileTracingIncludes: {
-      '/api/**/*': ['./node_modules/**/*.wasm', './node_modules/**/*.proto']
+      '/api/**/*': ['node_modules/tesseract.js-core/tesseract-core-simd.wasm']
     }
   }
 };
