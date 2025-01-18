@@ -3,7 +3,7 @@
       "app/api/**/route.ts": {
         "includeFiles": "node_modules/.pnpm/tesseract.js-core@5.1.1/node_modules/tesseract.js-core/tesseract-core-simd.wasm",
         "memory": 1024,
-        "maxDuration": 60
+        "maxDuration": 200
       }
     }
 }
