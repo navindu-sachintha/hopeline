@@ -14,7 +14,7 @@ const statusColors = {
 export function CaseTable({cases: initialCases}:CaseTableProps) {
 
     const [cases, setCases] = useState(initialCases);
-
+    // case
   return (
     <div className="space-y-4">
         <div className="flex justify-end">
