@@ -3,6 +3,7 @@ export {}
 // Create a type for the roles
 export type Roles = 'admin' | 'user' | 'student_rep'
 export type Status = 'NEW' | 'PROCESSING' | 'REJECTED' | 'RESOLVED'
+export type Prediction = 'non-toxic' | 'toxic';
 
 declare global {
   interface CustomJwtSessionClaims {

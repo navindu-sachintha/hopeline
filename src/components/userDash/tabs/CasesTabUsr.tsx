@@ -44,7 +44,7 @@ export const CasesTabUsr = () => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {loading ? <p>Loading...</p> : (cases.map((c) => (
+                {loading ? <TableRow><TableCell>Loading...</TableCell></TableRow> : (cases.map((c) => (
                     <TableRow key={c.id}>
                         <TableCell>{c.id}</TableCell>
                         <TableCell>{c.title}</TableCell>

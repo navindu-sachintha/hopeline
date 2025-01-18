@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
@@ -33,9 +33,9 @@ model Case {
   user                User       @relation(fields: [userId], references: [id])
   title               String
   incidentHappenedTo  String
-  description         String 
+  description         String
   incidentDescription String
-  incidentConnection  String 
+  incidentConnection  String
   extractedString     String
   reporterConnection  String
   affectedConnection  String
@@ -46,4 +46,5 @@ model Case {
   dateUpdated         DateTime   @updatedAt
   userId              String
   status              CaseStatus @default(NEW)
+  toxic               Boolean    @default(false)
 }

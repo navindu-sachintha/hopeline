@@ -1,6 +1,10 @@
+import { env } from "@/env";
 import prisma from "@/lib/prisma";
 import { extractText } from "@/lib/textExtractor";
+import type { Prediction } from "@/types/globals";
+import { CaseStatus } from "@prisma/client";
 import { del, put } from "@vercel/blob";
+import axios from "axios";
 
 export async function createCase(userId: string, formData: FormData) {
     try {
@@ -101,5 +105,60 @@ export async function deleteCase(id:string){
         console.log(`Case with id ${id} deleted`);
     } catch (error) {
         console.error(`error deleting case with id ${id}`, error);
+    }
+}
+
+export async function getAllCases(){
+    try {
+        return await prisma.case.findMany({})
+    } catch (error) {
+        console.error('error getting all cases', error);
+    }
+}
+
+export async function processCaseEvidence(id:string){
+    try {
+        const caseData = await prisma.case.findUnique({
+            where: {
+            id: id
+            }
+        });
+
+        if (caseData){
+            const extractedString = caseData.extractedString;
+            const response = await axios.post<Array<{label: Prediction}>>(env.AI_INFERENCE_API_URL,{
+                text: extractedString
+            });
+
+            if (response.status === 200 && response.data[0]){
+                const prediction: Prediction = response.data[0].label;
+                let updatedCase;
+                if (prediction === 'toxic'){
+                    updatedCase = await prisma.case.update({
+                        where:{
+                            id: id
+                        },
+                        data:{
+                            toxic: true,
+                            status: CaseStatus.PROCESSING
+                        }
+                    })
+                } else {
+                    updatedCase = await prisma.case.update({
+                        where:{
+                            id:id
+                        },
+                        data:{
+                            toxic: false,
+                            status: CaseStatus.PROCESSING
+                        }
+                    })
+                }
+                return updatedCase;
+            }
+        }
+
+    } catch (error) {
+        console.error('Error processing evidence', error);
     }
 }

@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { deleteCase, getCaseById } from "../../queries/case";
+import { deleteCase, getCaseById, processCaseEvidence } from "../../queries/case";
 
 export async function GET(req:Request,route:{params:{id:string}}){
     try {
@@ -28,5 +28,17 @@ export async function DELETE(req:Request,route:{params:{id:string}}){
     } catch (error) {
         console.error('Error deleting case', error);
         return new Response('Error deleting case', {status: 500});
+    }
+}
+
+export async function PUT(req:Request,route:{params:{id:string}}){
+    try {
+        const processedEvidence = await processCaseEvidence(route.params.id);
+        if (processedEvidence){
+            return new Response(JSON.stringify(processedEvidence), {status: 200});
+        }
+    } catch (error) {
+        console.error('Error processing evidence', error);
+        return new Response('Error processing evidence', {status: 500});
     }
 }
