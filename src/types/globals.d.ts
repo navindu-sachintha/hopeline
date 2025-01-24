@@ -39,10 +39,11 @@ declare global {
   }
 
   interface AnalyticSummary {
+    newCases: number;
+    processingCases: number;
     totalCases: number;
-    openCases: number;
     resolvedCases: number;
-    totalUsers: number;
-    averageResolutionTime: string;
+    totalRegisteredUsers: number;
+    recentCases: Case[]
   }
 }
