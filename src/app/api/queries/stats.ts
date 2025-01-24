@@ -19,9 +19,6 @@ export async function getStats(){
             take: 10
         });
         const recentCases = await prisma.case.findMany({
-            where:{
-                status: 'NEW'
-            },
             orderBy:{
                 dateCreated: 'desc'
             },
