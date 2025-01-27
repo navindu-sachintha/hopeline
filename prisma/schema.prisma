@@ -36,7 +36,6 @@ model Case {
   description         String
   incidentDescription String
   incidentConnection  String
-  extractedString     String
   reporterConnection  String
   affectedConnection  String
   perceptorConnection String

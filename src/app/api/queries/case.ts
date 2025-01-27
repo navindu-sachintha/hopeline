@@ -31,11 +31,7 @@ export async function createCase(userId: string, formData: FormData) {
             urls.push(blob.url);
         }
 
-        // perform OCR
-        let text = '';
-        for (const url of urls) {
-            text += await extractText(url);
-        }
+        
 
         const newCase = await prisma.case.create({
             data:{
@@ -43,7 +39,6 @@ export async function createCase(userId: string, formData: FormData) {
                 title: formValues.caseName as string,
                 description: formValues.description as string,
                 evidenceUrls: urls,
-                extractedString: text,
                 incidentHappenedTo: formValues.incidentHappenedTo as string,
                 incidentDescription: formValues.incidentDescription as string,
                 incidentConnection: formValues.incidentConnection as string,
@@ -125,7 +120,14 @@ export async function processCaseEvidence(id:string){
         });
 
         if (caseData){
-            const extractedString = caseData.extractedString;
+            const evidenceUrls = caseData.evidenceUrls;
+            let extractedString = '';
+            if (evidenceUrls){
+                for (const url of evidenceUrls){
+                    const text =  await extractText(url);
+                    extractedString += text;
+                }
+            }
             const response = await axios.post<Array<{label: Prediction}>>(env.AI_INFERENCE_API_URL,{
                 text: extractedString
             });
