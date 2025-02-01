@@ -9,13 +9,15 @@ import { reportSchema, useAnonymousReportStore } from "@/store/formstore"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { Input } from "../ui/input"
+import axios from "axios"
 
 type FormData = z.infer<typeof reportSchema>
 
 export const AnonymousReport = () => {
   const { resetForm } = useAnonymousReportStore()
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { control, handleSubmit, formState: { errors }, register } = useForm<FormData>({
     resolver: zodResolver(reportSchema),
     defaultValues: {
       incidentHappenedTo: 'me',
@@ -24,13 +26,30 @@ export const AnonymousReport = () => {
       yourConnection: 'student',
       affectedPersonConnection: 'student',
       allegedPerpetratorConnection: 'student',
-      anonymousReportReason: []
+      anonymousReportReason: [],
     }
   })
 
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form Data", data)
+  const onSubmit = async (data: FormData) => {
+    const formDataToSubmit = {
+      ...data,
+      incidentDescription:
+        data.incidentDescription.includes("Other") && data.otherIncidentDescription
+          ? [...data.incidentDescription.filter((item) => item !== "Other"), data.otherIncidentDescription]
+          : data.incidentDescription,
+      incidentConnection: data.incidentConnection
+        .map((item) => (item === "Other" ? `${data.otherIncidentConnection}` : item))
+        .filter(Boolean),
+      yourConnection: data.yourConnection === "other" ? `${data.otherYourConnection}` : data.yourConnection,
+      affectedPersonConnection: data.affectedPersonConnection === "other" ? `${data.otherAffectedPersonConnection}` : data.affectedPersonConnection,
+      allegedPerpetratorConnection: data.allegedPerpetratorConnection === "other" ? `${data.otherAllegedPerpetratorConnection}` : data.allegedPerpetratorConnection,
+      anonymousReportReason: data.anonymousReportReason
+        .map((item) => (item === "Other" ? `${data.otherAnonymousReportReason}` : item))
+        .filter(Boolean),
+    }
+    const response = await axios.post('/api/case/anonymous', formDataToSubmit)
+    console.log(response.status)
     resetForm()
 
   }
@@ -83,6 +102,14 @@ export const AnonymousReport = () => {
                         }}
                       />
                       <Label htmlFor={`incident-description-${item.toLowerCase()}`}>{item}</Label>
+                      {item === 'Other' && field.value.includes("Other") && (
+                        <div className="mt-2">
+                          <Input  
+                            id="other-incident-description" 
+                            placeholder="Please specify"
+                            {...register("otherIncidentDescription")} />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -98,7 +125,7 @@ export const AnonymousReport = () => {
               control={control}
               render={({ field }) => (
                 <div className="space-y-2">
-                  {['Race', 'Gender', 'Sexual Orientation', 'Religion', 'Disability', 'Age', 'Other',"Don't Know"].map((item) => (
+                  {['Race', 'Gender', 'Sexual Orientation', 'Religion', 'Disability', 'Age', 'Other'].map((item) => (
                     <div key={item} className="flex items-center space-x-2">
                       <Checkbox
                         id={`incident-connection-${item.toLowerCase()}`}
@@ -112,6 +139,13 @@ export const AnonymousReport = () => {
                         }}
                       />
                       <Label htmlFor={`incident-connection-${item.toLowerCase()}`}>{item}</Label>
+                      {item === "Other" && field.value.includes("Other") && (
+                          <Input
+                            className="ml-2 w-48"
+                            placeholder="Please specify"
+                            {...register("otherIncidentConnection")}
+                          />
+                        )}
                     </div>
                   ))}
                 </div>
@@ -131,6 +165,13 @@ export const AnonymousReport = () => {
                     <div key={value} className="flex items-center space-x-2">
                       <RadioGroupItem value={value} id={`your-connection-${value}`} />
                       <Label htmlFor={`your-connection-${value}`}>{value}</Label>
+                      {value === "other" && field.value === "other" && (
+                        <Input
+                          className="ml-2 w-48"
+                          placeholder="Please specify"
+                          {...register("otherYourConnection")}
+                        />
+                      )}
                     </div>
                   ))}
                 </RadioGroup>
@@ -150,6 +191,13 @@ export const AnonymousReport = () => {
                     <div key={value} className="flex items-center space-x-2">
                       <RadioGroupItem value={value} id={`affected-person-connection-${value}`} />
                       <Label htmlFor={`affected-person-connection-${value}`}>{value}</Label>
+                      {value === "other" && field.value === "other" && (
+                        <Input
+                          className="ml-2 w-48"
+                          placeholder="Please specify"
+                          {...register("otherAffectedPersonConnection")}
+                        />
+                      )}
                     </div>
                   ))}
                 </RadioGroup>
@@ -169,6 +217,13 @@ export const AnonymousReport = () => {
                     <div key={value} className="flex items-center space-x-2">
                       <RadioGroupItem value={value} id={`alleged-perpetrator-connection-${value}`} />
                       <Label htmlFor={`alleged-perpetrator-connection-${value}`}>{value}</Label>
+                      {value === "other" && field.value === "other" && (
+                        <Input
+                          className="ml-2 w-48"
+                          placeholder="Please specify"
+                          {...register("otherAllegedPerpetratorConnection")}
+                        />
+                      )}
                     </div>
                   ))}
                 </RadioGroup>
@@ -198,6 +253,14 @@ export const AnonymousReport = () => {
                         }}
                       />
                       <Label htmlFor={`anonymous-reason-${item.toLowerCase().replace(/\s+/g, '-')}`}>{item}</Label>
+                      {item === 'Other' && field.value.includes("Other") && (
+                        <div className="mt-2">
+                          <Input  
+                            id="other-incident-description" 
+                            placeholder="Please specify"
+                            {...register("otherAnonymousReportReason")} />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

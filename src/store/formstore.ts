@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { z } from "zod";
+import axios from "axios";
 
 export const reportSchema = z.object({
   incidentHappenedTo: z.enum(['me', 'someone-else']),
@@ -8,7 +9,13 @@ export const reportSchema = z.object({
   yourConnection: z.enum(['student', 'staff', 'visitor', 'other']),
   affectedPersonConnection: z.enum(['student', 'staff', 'visitor', 'other']),
   allegedPerpetratorConnection: z.enum(['student', 'staff', 'visitor', 'other']),
-  anonymousReportReason: z.array(z.string()).min(1, 'Please select at least one reason')
+  anonymousReportReason: z.array(z.string()).min(1, 'Please select at least one reason'),
+  otherIncidentDescription: z.string().optional(),
+  otherIncidentConnection: z.string().optional(),
+  otherYourConnection: z.string().optional(),
+  otherAffectedPersonConnection: z.string().optional(),
+  otherAllegedPerpetratorConnection: z.string().optional(),
+  otherAnonymousReportReason: z.string().optional(),
 })
 
 type formState = z.infer<typeof reportSchema> & {
@@ -20,7 +27,6 @@ type formActions = {
   toggleForm: () => void;
   setFormData: (data: Partial<formState>) => void
   resetForm: () => void
-  submitForm: (data: dataState) => void
 }
 
 const initialState: formState = {
@@ -41,10 +47,4 @@ export const useAnonymousReportStore = create<formState & formActions>((set) => 
   ...initialState,
   setFormData: (data) => set((state) => ({ ...state, ...data })),
   resetForm: () => set(initialState),
-  submitForm: (data) => {
-    console.log('Form submitted:', data)
-    // Here you would typically send the data to your backend
-    // After successful submission, you might want to reset the form
-    // set(initialState)
-  }
 }))

@@ -1,6 +1,9 @@
+import { createAnonymousCase } from "../../queries/case";
+
 export async function POST(req:Request){
     try {
-        console.log('POST request');
+        const data = await req.json();
+        createAnonymousCase(data);
         return new Response('Case created', {status: 200});
     } catch (error) {
         console.error('Error creating case', error);

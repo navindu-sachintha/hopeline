@@ -46,4 +46,5 @@ model Case {
   userId              String
   status              CaseStatus @default(NEW)
   toxic               Boolean    @default(false)
+  anonymousReason     String[]   @default([])
 }
