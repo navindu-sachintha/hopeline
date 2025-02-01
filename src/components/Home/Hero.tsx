@@ -49,8 +49,8 @@ export const Hero = () => {
           <Image
             src={slide.image || "/placeholder.svg"}
             alt={slide.title}
-            width={1920}
-            height={1080}
+            layout="fill"
+            objectFit="cover"
             priority={index === 0}
           />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white p-4">
