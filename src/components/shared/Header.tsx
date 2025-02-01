@@ -16,7 +16,6 @@ import { UserButton, useUser, useClerk } from '@clerk/nextjs'
 const baseNavItems = [
   { name: "Home", href: "/" },
   { name: "Awareness", href: "/awareness" },
-  { name: "Report", href: "/report" },
 ]
 
 export default function Component() {

@@ -46,4 +46,11 @@ declare global {
     totalRegisteredUsers: number;
     recentCases: Case[]
   }
+
+  interface Slide {
+    id: number
+    image: string
+    title: string
+    description: string
+  }
 }
