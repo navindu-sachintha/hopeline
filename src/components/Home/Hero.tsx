@@ -22,7 +22,7 @@ const slides: Slide[] = [
     id: 3,
     image: "/hero3.jpeg",
     title: "Together We Can Stop Cyberbullying",
-    description: "Join our community in promoting digital respect and kindness.",
+    description: "Join us to make the university a safer place for everyone.",
   },
 ]
 export const Hero = () => {
@@ -32,7 +32,7 @@ export const Hero = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length)
-    }, 5000) // Change slide every 5 seconds
+    }, 6000)
 
     return () => clearInterval(timer)
   }, [])
@@ -58,7 +58,7 @@ export const Hero = () => {
             <p className="text-xl md:text-2xl max-w-2xl text-center mb-8">{slide.description}</p>
             <div className="flex space-x-4">
               <Button size='lg' variant="default" onClick={() => router.push("/report")}>
-                Report Cyberbullying
+                Speak to Us
               </Button>
               <Button size='lg' variant='outline' className="text-black" onClick={() => router.push("/awareness")}>
                 Learn More
