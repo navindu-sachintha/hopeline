@@ -1,7 +1,7 @@
 export {}
 
 // Create a type for the roles
-export type Roles = 'admin' | 'user' | 'student_rep'
+export type Roles = 'admin' | 'user' | 'student_rep' | 'anonymous' | 'proffessional'
 export type Status = 'NEW' | 'PROCESSING' | 'REJECTED' | 'RESOLVED'
 export type Prediction = 'non-toxic' | 'toxic';
 
@@ -18,6 +18,23 @@ declare global {
     email: string;
     role?: Roles;
     joinedAt: string;
+  }
+
+  interface ReportFormData {
+    reporterType: Omit<Roles, 'admin', 'student_rep', 'proffessional'>;
+    email: string;
+    title: string;
+    description: string;
+    incidentHappenedTo: string;
+    incidentTypes: string[];
+    incidentConnections: string[];
+    reporterConnection: string;
+    affectedConnection: string;
+    perpetratorConnection: string;
+    consentToReport: boolean;
+    consentToUpload: boolean;
+    evidenceFiles: File[] | null;
+    anonymousReason: string[];
   }
 
   interface Case {
