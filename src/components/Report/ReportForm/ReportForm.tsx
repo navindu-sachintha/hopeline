@@ -162,7 +162,7 @@ export default function CyberbullyingReportForm() {
           </Button>
         )}
         {step < 3 ? (
-          <Button onClick={handleNext}>Next</Button>
+          <Button onClick={handleNext} disabled={formData.reporterType === 'user' && !isSignedIn}>Next</Button>
         ) : (
           <Button onClick={handleSubmit}>Submit</Button>
         )}
