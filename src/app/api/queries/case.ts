@@ -116,31 +116,6 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
     }
 }
 
-export async function createAnonymousCase(formData: any){
-    try {
-        const formValues = Object.fromEntries(formData.entries());
-        console.log('Creating anonymous case', formData);
-        const anonymousCase = await prisma.case.create({
-            data:{
-                userId: 'anonymous',
-                title: "Anonymous Case",
-                description: "Anonymous Case",
-                incidentHappenedTo: formValues.incidentHappenedTo as string,
-                incidentDescription: formValues.incidentDescription as string,
-                incidentConnection: formValues.incidentConnection as string,
-                reporterConnection: formValues.yourConnection as string,
-                affectedConnection: formValues.affectedPersonConnection as string,
-                perceptorConnection: formValues.allegedPerpetratorConnection as string,
-                anonymous: true,
-                anonymousReason: formValues.anonymousReason as unknown as string[]
-            }
-        })
-    } catch (error) {
-        console.error('Error creating anonymous case', error);
-        
-    }
-}
-
 export async function getCases(userId: string){
     try {
         return await prisma.case.findMany({
