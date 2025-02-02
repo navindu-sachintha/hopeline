@@ -1,9 +1,13 @@
-import { createAnonymousCase } from "../../queries/case";
+import requestIp from 'request-ip';
+import { createAnonymousCase } from '../../queries/case';
 
 export async function POST(req:Request){
     try {
-        const data = await req.json();
-        createAnonymousCase(data);
+        const ipAddress = await requestIp.getClientIp({
+            headers: Object.fromEntries(req.headers.entries())
+        })
+        const formData = await req.formData();
+        const anonymousCase = await createAnonymousCase(formData, ipAddress!)
         return new Response('Case created', {status: 200});
     } catch (error) {
         console.error('Error creating case', error);

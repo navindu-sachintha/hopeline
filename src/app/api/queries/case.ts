@@ -5,13 +5,15 @@ import type { Prediction } from "@/types/globals";
 import { CaseStatus } from "@prisma/client";
 import { del, put } from "@vercel/blob";
 import axios from "axios";
+import { addEvidence, addEvidenceAnonymous } from "./evidence";
+import { createAnonymousUser } from "./user";
 
 export async function createCase(userId: string, formData: FormData) {
     try {
-        const files = formData.getAll('files') as File[];
+        const files = formData.getAll('evidenceFiles') as File[];
         const formValues = Object.fromEntries(
             Array.from(formData.entries()).map(([key, value]) => {
-                if (key !== 'files') {
+                if (key !== 'evidenceFiles') {
                     try {
                         return [key, JSON.parse(value as string)];
                     } catch {
@@ -21,35 +23,96 @@ export async function createCase(userId: string, formData: FormData) {
                 return [key, value];
             })
         );
-
-        const urls = [];
-        for (const file of files) {
-            const blob = await put(`cases/${userId}/${file.name}`, file, {
-                access: 'public',
-                addRandomSuffix: false
-            })
-            urls.push(blob.url);
-        }
-
-        
-
+        console.log('Form values', formValues);
         const newCase = await prisma.case.create({
-            data:{
-                userId: userId,
-                title: formValues.caseName as string,
-                description: formValues.description as string,
-                evidenceUrls: urls,
-                incidentHappenedTo: formValues.incidentHappenedTo as string,
-                incidentDescription: formValues.incidentDescription as string,
-                incidentConnection: formValues.incidentConnection as string,
-                reporterConnection: formValues.yourConnection as string,
-                affectedConnection: formValues.affectedPersonConnection as string,
-                perceptorConnection: formValues.allegedPerpetratorConnection as string,
+            data: {
+                reportedByUser: {
+                    connect: { id: userId }
+                },
+                title: formValues.title,
+                description: formValues.description,
+                incidentHappenedTo: formValues.incidentHappenedTo,
+                incidentTypes: formValues.incidentTypes.split(','),
+                incidentConnections: formValues.incidentConnections.split(','),
+                reporterConnection: formValues.reporterConnection,
+                affectedConnection: formValues.affectedConnection,
+                perpetratorConnection: formValues.perpetratorConnection,
+                consentToReport: formValues.consentToReport,
+                consentToUpload: formValues.consentToUpload,
             }
         })
         console.log('Case created', newCase.id);
+        console.log('Files', files);
+
+        if( files.length > 0){
+            for(const file of files){
+                const blob = await put(`evidence/${userId}/${file.name}`,file,{
+                    access: 'public',
+                    addRandomSuffix: false
+                })
+                await addEvidence(newCase.id, blob.url, userId);
+            }
+        }
+
+        return newCase.id;
     } catch (error) {
         console.error('Error creating case', error);
+        throw new Error('Error creating case');
+    }
+}
+
+export async function createAnonymousCase( formData: FormData, ipAddress: string) {
+    try {
+        const userId = await createAnonymousUser(ipAddress);
+        console.log('User created', userId);
+        const files = formData.getAll('evidenceFiles') as File[];
+        const formValues = Object.fromEntries(
+            Array.from(formData.entries()).map(([key, value]) => {
+                if (key !== 'evidenceFiles') {
+                    try {
+                        return [key, JSON.parse(value as string)];
+                    } catch {
+                        return [key, value];
+                    }
+                }
+                return [key, value];
+            })
+        );
+        const newCase = await prisma.case.create({
+            data: {
+                reportedByAnonymous:{
+                    connect:{anonymousId: userId}
+                },
+                title: formValues.title,
+                description: formValues.description,
+                incidentHappenedTo: formValues.incidentHappenedTo,
+                incidentTypes: formValues.incidentTypes.split(','),
+                incidentConnections: formValues.incidentConnections.split(','),
+                reporterConnection: formValues.reporterConnection,
+                affectedConnection: formValues.affectedConnection,
+                perpetratorConnection: formValues.perpetratorConnection,
+                consentToReport: formValues.consentToReport,
+                consentToUpload: formValues.consentToUpload,
+                anonymousReason: formValues.anonymousReason.split(',')
+            }
+        })
+        console.log('Case created', newCase.id);
+        console.log('Files', files);
+
+        if( files.length > 0){
+            for(const file of files){
+                const blob = await put(`evidence/${userId}/${file.name}`,file,{
+                    access: 'public',
+                    addRandomSuffix: false
+                })
+                await addEvidenceAnonymous(newCase.id, blob.url, userId!);
+            }
+        }
+
+        return newCase.id;
+    } catch (error) {
+        console.error('Error creating case', error);
+        throw new Error('Error creating case');
     }
 }
 
