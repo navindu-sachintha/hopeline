@@ -45,7 +45,7 @@ const SignUp = () => {
         }
         setError('');
         return true;
-      };
+    };
 
     if (!isLoaded) {
         return <div>Loading...</div>;
