@@ -102,7 +102,7 @@ export default function CyberbullyingReportForm() {
             if(Key === 'evidenceFiles'){
                 return
             }
-            data.append(Key, value);
+            data.append(Key, value as string);
         })
 
         if(formData.evidenceFiles){

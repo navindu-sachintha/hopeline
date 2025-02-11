@@ -32,8 +32,8 @@ export async function createCase(userId: string, formData: FormData) {
                 title: formValues.title as string,
                 description: formValues.description as string,
                 incidentHappenedTo: formValues.incidentHappenedTo as string,
-                incidentTypes: formValues.incidentTypes.split(',') as string[],
-                incidentConnections: formValues.incidentConnections.split(',') as string[],
+                incidentTypes: typeof formValues.incidentTypes === 'string' ? formValues.incidentTypes.split(',') : [],
+                incidentConnections: typeof formValues.incidentConnections === 'string' ? formValues.incidentConnections.split(',') : [],
                 reporterConnection: formValues.reporterConnection as string,
                 affectedConnection: formValues.affectedConnection as string,
                 perpetratorConnection: formValues.perpetratorConnection as string,
@@ -86,14 +86,14 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
                 title: formValues.title as string,
                 description: formValues.description as string,
                 incidentHappenedTo: formValues.incidentHappenedTo as string,
-                incidentTypes: formValues.incidentTypes.split(',') as string[],
-                incidentConnections: formValues.incidentConnections.split(',') as string[],
+                incidentTypes: typeof formValues.incidentTypes === 'string' ? formValues.incidentTypes.split(',') : [],
+                incidentConnections: typeof formValues.incidentConnections === 'string' ? formValues.incidentConnections.split(',') : [],
                 reporterConnection: formValues.reporterConnection as string,
                 affectedConnection: formValues.affectedConnection as string,
                 perpetratorConnection: formValues.perpetratorConnection as string,
                 consentToReport: formValues.consentToReport as boolean,
                 consentToUpload: formValues.consentToUpload as boolean,
-                anonymousReason: formValues.anonymousReason.split(',') as string[]
+                anonymousReason: typeof formValues.anonymousReason === 'string' ? formValues.anonymousReason.split(',') : [],
             }
         })
         console.log('Case created', newCase.id);

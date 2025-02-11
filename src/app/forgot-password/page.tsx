@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -45,7 +46,9 @@ const ForgotPasswordPage:NextPage = () => {
             setError('')
           })
           .catch((err) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             console.error('error', err.errors[0].longMessage)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
             setError(err.errors[0].longMessage)
           })
     }
@@ -58,16 +61,18 @@ const ForgotPasswordPage:NextPage = () => {
             code,
             password,
           })
-          .then((result) => {
+          .then(async (result) => {
             if (result.status === 'complete') {
-              setActive({ session: result.createdSessionId })
+              await setActive({ session: result.createdSessionId })
               setError('')
             } else {
               console.log(result)
             }
           })
           .catch((err) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             console.error('error', err.errors[0].longMessage)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
             setError(err.errors[0].longMessage)
           })
       }
