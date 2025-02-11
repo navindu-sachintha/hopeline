@@ -1,3 +1,5 @@
+import { User } from "@clerk/nextjs/server";
+
 export {}
 
 // Create a type for the roles
@@ -12,12 +14,30 @@ declare global {
     }
   }
 
-  interface User {
-    id:string;
-    name: string;
-    email: string;
-    role?: Roles;
-    joinedAt: string;
+  // interface User {
+  //   id:string;
+  //   name: string;
+  //   email: string;
+  //   role?: Roles;
+  //   joinedAt: string;
+  // }
+
+  
+
+  interface CreateUserParams {
+    username: string;
+    password: string;
+    emailAddress: string[];
+    publicMetadata?: {
+      role: string;
+    }
+  }
+
+  interface UpdateUserParams {
+    username: string;
+    publicMetadata?: {
+      role: string;
+    }
   }
 
   interface ReportFormData {

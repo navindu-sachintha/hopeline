@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import UserMngmt from './UserMngmt'
 import CaseMngmt from './CaseMngmt'
 import { Button } from '../ui/button'
-import { BarChart2, FileText, Menu, PanelLeft, Settings, Users, X } from 'lucide-react'
+import { BarChart2, FileText, PanelLeft, Settings, Users, X } from 'lucide-react'
 import { ScrollArea } from '../ui/scroll-area'
 
 export default function AdminDashboard() {
@@ -12,8 +12,15 @@ export default function AdminDashboard() {
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
-    // @ts-ignore
-    const NavItem = ({ icon: Icon, label, isActive, onClick }) => (
+    
+    interface NavItemProps {
+        icon: React.ElementType;
+        label: string;
+        isActive: boolean;
+        onClick: () => void;
+    }
+
+    const NavItem = ({ icon: Icon, label, isActive, onClick }: NavItemProps) => (
         <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start" onClick={onClick}>
           <Icon className="mr-2 h-4 w-4" />
           {label}
@@ -37,12 +44,6 @@ export default function AdminDashboard() {
         <ScrollArea className="h-full">
           <nav className="space-y-2">
             <NavItem
-              icon={Users}
-              label="User Management"
-              isActive={activeTab === "users"}
-              onClick={() => setActiveTab("users")}
-            />
-            <NavItem
               icon={FileText}
               label="Case Management"
               isActive={activeTab === "cases"}
@@ -53,6 +54,12 @@ export default function AdminDashboard() {
               label="Analytics"
               isActive={activeTab === "analytics"}
               onClick={() => setActiveTab("analytics")}
+            />
+            <NavItem
+              icon={Users}
+              label="User Management"
+              isActive={activeTab === "users"}
+              onClick={() => setActiveTab("users")}
             />
             <NavItem
               icon={Settings}
@@ -74,23 +81,23 @@ export default function AdminDashboard() {
         <ScrollArea className="h-full mt-12">
           <nav className="space-y-2">
             <NavItem
-              icon={Users}
-              label="User Management"
-              isActive={activeTab === "users"}
-              onClick={() => {
-                setActiveTab("users")
-                toggleSidebar()
-              }}
-            />
-            <NavItem
               icon={FileText}
               label="Case Management"
               isActive={activeTab === "cases"}
               onClick={() => {
-                setActiveTab("cases")
-                toggleSidebar()
-              }}
+                  setActiveTab("cases")
+                  toggleSidebar()
+                }}
             />
+                <NavItem
+                  icon={Users}
+                  label="User Management"
+                  isActive={activeTab === "users"}
+                  onClick={() => {
+                    setActiveTab("users")
+                    toggleSidebar()
+                  }}
+                />
             <NavItem
               icon={BarChart2}
               label="Analytics"

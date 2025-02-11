@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
+
 import { useSignUp } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import React from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -18,15 +19,15 @@ const SignUp = () => {
     const nsbmEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*nsbm\.ac\.lk$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    const [email, setEmail] = React.useState('');
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [pendingVerification, setPendingVerification] = React.useState(false);
-    const [verificationCode, setVerificationCode] = React.useState('');
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [pendingVerification, setPendingVerification] = useState(false);
+    const [verificationCode, setVerificationCode] = useState('');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const [error, setError] = React.useState("");
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const router = useRouter();
 

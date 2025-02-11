@@ -10,8 +10,8 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Menu, UserCircle } from "lucide-react"
-import { UserButton, useUser, useClerk } from '@clerk/nextjs'
+import { Menu } from "lucide-react"
+import { useUser, useClerk } from '@clerk/nextjs'
 
 const baseNavItems = [
   { name: "Home", href: "/" },
