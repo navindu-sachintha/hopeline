@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation"
 import { Button } from "../ui/button"
 import { ArrowLeft, Trash2 } from "lucide-react"
 import axios from "axios"
+import { CaseStatus } from "@prisma/client"
 
 interface CaseDataProps {
-    incident: Case
+    incident: CaseData
     role: Roles
 }
 
@@ -56,17 +57,17 @@ export const Incident = ({incident, role }:CaseDataProps) => {
                 </div>
                 <div>
                     <label className="text-sm text-gray-600">Type of Incident</label>
-                    <p className="mt-1">{incident.incidentDescription}</p>
+                    <p className="mt-1">{incident.incidentTypes.map((i)=> ` ${i} |`)}</p>
                 </div>
                 <div>
                     <label className="text-sm text-gray-600">Connection to Incident</label>
-                    <p className="mt-1">{incident.incidentConnection}</p>
+                    <p className="mt-1">{incident.incidentConnections.map((i) => ` ${i} |`)}</p>
                 </div>
                 <div>
                     <label className="text-sm text-gray-600">Status</label>
                     <p>
                         <span
-                            className={`px-2 py-1 rounded-full text-xs font-semibold ${incident.status === 'NEW' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                            className={`px-2 py-1 rounded-full text-xs font-semibold ${incident.status === CaseStatus.OPEN? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
                         >
                             {incident.status}
                         </span>
@@ -108,12 +109,12 @@ export const Incident = ({incident, role }:CaseDataProps) => {
           </div>
         </div>
       </section>
-      {incident.evidenceUrls.length > 0 && (
+      {incident.Evidence.length > 0 && (
         <section className="p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">Evidence</h2>
           <div className="grid gap-2">
-            {incident.evidenceUrls.map((url, index) => (
-              <a key={index} href={url} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+            {incident.Evidence.map((evidence, index) => (
+              <a key={index} href={evidence.url} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
                 View Evidence {index + 1}
               </a>
             ))}

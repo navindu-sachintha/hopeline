@@ -7,6 +7,7 @@ import axios from 'axios'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { useRouter } from 'next/navigation'
 
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
@@ -15,6 +16,7 @@ const CaseMngmt = () => {
   const [status, setStatus] = useState<CaseStatus>(CaseStatus.OPEN)
   const [totalPages, setTotalPages] = useState(1)
   const [cases, setCases] = useState<CaseData[]>([])
+  const router = useRouter();
 
   const fetchCases = async() =>{
     try {
@@ -106,7 +108,7 @@ const CaseMngmt = () => {
               <TableCell>{c.reportedByUser ? c.reportedByUser.email : `Anonymous`}</TableCell>
               <TableCell>{new Date(c.dateCreated).toLocaleDateString()}</TableCell>
               <TableCell>
-                <Button variant='link'>
+                <Button variant='link' onClick={() => router.push(`/case/${c.id}`)}>
                   View
                 </Button>
               </TableCell>

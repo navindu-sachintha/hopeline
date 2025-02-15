@@ -85,6 +85,8 @@ declare global {
     reporterConnection: string;
     percepterConnection: string;
     affectedConnection: string;
+    incidentConnections: string[];
+    incidentTypes: string[];
     evidenceUrls: string[];
     description: string;
     reportedByUser:{

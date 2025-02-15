@@ -155,6 +155,30 @@ export async function getCaseById(id: string){
         return await prisma.case.findUnique({
             where:{
                 id: id
+            },
+            select:{
+                id:true,
+                title:true,
+                description:true,
+                status:true,
+                incidentConnections:true,
+                incidentHappenedTo:true,
+                incidentTypes:true,
+                reporterConnection:true,
+                affectedConnection:true,
+                perpetratorConnection:true,
+                dateCreated:true,
+                toxic:true,
+                userId:true,
+                reportedByUser:true,
+                reportedByAnonymous:true,
+                Evidence:{
+                    select:{
+                        url:true,
+                        uploadedAt:true,
+                        id:true
+                    }
+                }
             }
         })
     } catch (error) {
