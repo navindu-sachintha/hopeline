@@ -309,7 +309,13 @@ export async function getFilteredCasesPaginated(
                     userId:true,
                     reportedByUser:{
                         select:{
-                            
+                            username:true,
+                            email:true,
+                        }
+                    },
+                    reportedByAnonymous:{
+                        select:{
+                            ipAddress:true
                         }
                     },
                     Evidence:{
