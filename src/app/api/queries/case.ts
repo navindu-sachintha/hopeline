@@ -8,16 +8,21 @@ import axios from "axios";
 import { addEvidence, addEvidenceAnonymous } from "./evidence";
 import { createAnonymousUser } from "./user";
 
+interface PaginationOptions {
+    page: number;
+    limit: number;
+}
+
 export async function createCase(userId: string, formData: FormData) {
     try {
         const files = formData.getAll('evidenceFiles') as File[];
-        const formValues = Object.fromEntries(
+        const formValues: Record<string, string | boolean> = Object.fromEntries(
             Array.from(formData.entries()).map(([key, value]) => {
                 if (key !== 'evidenceFiles') {
                     try {
                         return [key, JSON.parse(value as string)];
                     } catch {
-                        return [key, value];
+                        return [key, value as string];
                     }
                 }
                 return [key, value];
@@ -29,16 +34,16 @@ export async function createCase(userId: string, formData: FormData) {
                 reportedByUser: {
                     connect: { id: userId }
                 },
-                title: formValues.title,
-                description: formValues.description,
-                incidentHappenedTo: formValues.incidentHappenedTo,
-                incidentTypes: formValues.incidentTypes.split(','),
-                incidentConnections: formValues.incidentConnections.split(','),
-                reporterConnection: formValues.reporterConnection,
-                affectedConnection: formValues.affectedConnection,
-                perpetratorConnection: formValues.perpetratorConnection,
-                consentToReport: formValues.consentToReport,
-                consentToUpload: formValues.consentToUpload,
+                title: formValues.title as string,
+                description: formValues.description as string,
+                incidentHappenedTo: formValues.incidentHappenedTo as string,
+                incidentTypes: typeof formValues.incidentTypes === 'string' ? formValues.incidentTypes.split(',') : [],
+                incidentConnections: typeof formValues.incidentConnections === 'string' ? formValues.incidentConnections.split(',') : [],
+                reporterConnection: formValues.reporterConnection as string,
+                affectedConnection: formValues.affectedConnection as string,
+                perpetratorConnection: formValues.perpetratorConnection as string,
+                consentToReport: formValues.consentToReport as boolean,
+                consentToUpload: formValues.consentToUpload as boolean,
             }
         })
         console.log('Case created', newCase.id);
@@ -72,10 +77,10 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
                     try {
                         return [key, JSON.parse(value as string)];
                     } catch {
-                        return [key, value];
+                        return [key, value as string];
                     }
                 }
-                return [key, value];
+                return [key, value as string];
             })
         );
         const newCase = await prisma.case.create({
@@ -83,17 +88,17 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
                 reportedByAnonymous:{
                     connect:{anonymousId: userId}
                 },
-                title: formValues.title,
-                description: formValues.description,
-                incidentHappenedTo: formValues.incidentHappenedTo,
-                incidentTypes: formValues.incidentTypes.split(','),
-                incidentConnections: formValues.incidentConnections.split(','),
-                reporterConnection: formValues.reporterConnection,
-                affectedConnection: formValues.affectedConnection,
-                perpetratorConnection: formValues.perpetratorConnection,
-                consentToReport: formValues.consentToReport,
-                consentToUpload: formValues.consentToUpload,
-                anonymousReason: formValues.anonymousReason.split(',')
+                title: formValues.title as string,
+                description: formValues.description as string,
+                incidentHappenedTo: formValues.incidentHappenedTo as string,
+                incidentTypes: typeof formValues.incidentTypes === 'string' ? formValues.incidentTypes.split(',') : [],
+                incidentConnections: typeof formValues.incidentConnections === 'string' ? formValues.incidentConnections.split(',') : [],
+                reporterConnection: formValues.reporterConnection as string,
+                affectedConnection: formValues.affectedConnection as string,
+                perpetratorConnection: formValues.perpetratorConnection as string,
+                consentToReport: formValues.consentToReport as boolean,
+                consentToUpload: formValues.consentToUpload as boolean,
+                anonymousReason: typeof formValues.anonymousReason === 'string' ? formValues.anonymousReason.split(',') : [],
             }
         })
         console.log('Case created', newCase.id);
@@ -116,7 +121,7 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
     }
 }
 
-export async function getCases(userId: string){
+export async function getCasesByUser(userId: string){
     try {
         return await prisma.case.findMany({
             where:{
@@ -128,11 +133,20 @@ export async function getCases(userId: string){
                 description:true,
                 status:true,
                 dateCreated:true,
-                evidenceUrls:true
+                toxic:true,
+                userId:true,
+                Evidence:{
+                    select:{
+                        url:true,
+                        uploadedAt:true,
+                        id:true
+                    }
+                }
             }
         })
     } catch (error) {
         console.error(`error getting cases for user ${userId}`, error);
+        throw new Error(`Error getting cases for user ${userId}`);
     }
 }
 
@@ -145,51 +159,94 @@ export async function getCaseById(id: string){
         })
     } catch (error) {
         console.error(`error getting case with id ${id}`, error);
+        throw new Error(`Error getting case with id ${id}`);
     }
 }
 
 export async function deleteCase(id:string){
     try {
+        const evidenceRecords = await prisma.evidence.findMany({
+            where:{
+                caseId: id
+            }
+        })
+        if(evidenceRecords){
+            await Promise.all(
+                evidenceRecords.map(async (evidence) => {
+                    try {
+                        await del(evidence.url)
+                    } catch (error) {
+                        console.error(`error deleting evidence with url ${evidence.id}`, error);
+                    }
+                })
+            )
+        }
+        await prisma.evidence.deleteMany({
+            where:{
+                caseId: id
+            }
+        })
         const deletedCase = await prisma.case.delete({
             where:{
                 id: id
             }
         })
-        if (deletedCase.evidenceUrls){
-            for (const url of deletedCase.evidenceUrls){
-                await del(url)
-            }
-        }
+        
         console.log(`Case with id ${id} deleted`);
+        return deletedCase;
     } catch (error) {
         console.error(`error deleting case with id ${id}`, error);
+        throw new Error(`Error deleting case with id ${id}`);
     }
 }
-
+export async function deleteCasesByUser(userId:string){
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id: userId
+            }
+        })
+        if(user){
+            const cases = await prisma.case.findMany({
+                where:{
+                    userId: userId
+                }
+            })
+            if(cases){
+                await Promise.all(
+                    cases.map(async (c) => {
+                        await deleteCase(c.id)
+                    })
+                )
+            }
+        }
+    } catch (error) {
+        console.error(`error deleting cases for user ${userId}`, error);
+        throw new Error(`Error deleting cases for user ${userId}`);
+    }
+}
 export async function getAllCases(){
     try {
         return await prisma.case.findMany({})
     } catch (error) {
         console.error('error getting all cases', error);
+        throw new Error('Error getting all cases');
     }
 }
 
 export async function processCaseEvidence(id:string){
     try {
-        const caseData = await prisma.case.findUnique({
-            where: {
-            id: id
+        const evidenceRecords = await prisma.evidence.findMany({
+            where:{
+                caseId: id
             }
-        });
+        })
 
-        if (caseData){
-            const evidenceUrls = caseData.evidenceUrls;
+        if (evidenceRecords){
             let extractedString = '';
-            if (evidenceUrls){
-                for (const url of evidenceUrls){
-                    const text =  await extractText(url);
-                    extractedString += text;
-                }
+            for (const evidence of evidenceRecords){
+                const text = await extractText(evidence.url);
+                extractedString += text;
             }
             const response = await axios.post<Array<{label: Prediction}>>(env.AI_INFERENCE_API_URL,{
                 text: extractedString
@@ -225,5 +282,55 @@ export async function processCaseEvidence(id:string){
 
     } catch (error) {
         console.error('Error processing evidence', error);
+        throw new Error('Error processing evidence');
+    }
+}
+
+export async function getFilteredCasesPaginated(
+    status:string,
+    { page = 1, limit = 10 }:PaginationOptions
+){
+    try {
+        const skip = (page - 1) * limit;
+        const [cases, totalCases] = await Promise.all([
+            prisma.case.findMany({
+                skip,
+                take: limit,
+                where:{
+                    status: status as CaseStatus
+                },
+                select:{
+                    id:true,
+                    title:true,
+                    description:true,
+                    status:true,
+                    dateCreated:true,
+                    toxic:true,
+                    userId:true,
+                    reportedByUser:{
+                        select:{
+                            
+                        }
+                    },
+                    Evidence:{
+                        select:{
+                            url:true,
+                            uploadedAt:true,
+                            id:true
+                        }
+                    }
+                }
+            }),
+            prisma.case.count()
+        ])
+        return {
+            cases,
+            totalCases,
+            page,
+            totalPages: Math.ceil(totalCases / limit)
+        }
+    } catch (error) {
+        console.error('error getting cases paginated', error);
+        throw new Error('Error getting cases paginated');
     }
 }

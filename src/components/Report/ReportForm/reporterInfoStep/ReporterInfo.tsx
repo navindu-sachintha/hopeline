@@ -20,7 +20,7 @@ export default function ReporterInfo({ formData, updateFormData, userLoggedIn }:
     <div className="space-y-4">
       <div>
         <Label>Reporter Type</Label>
-        <RadioGroup value={formData.reporterType} onValueChange={(value) => updateFormData({ reporterType: value })}>
+        <RadioGroup value={formData.reporterType as string} onValueChange={(value) => updateFormData({ reporterType: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="user" id="user" />
             <Label htmlFor="user">Registered User</Label>

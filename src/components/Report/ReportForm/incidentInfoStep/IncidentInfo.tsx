@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { validationErrors } from "@/lib/formSchemas"
+import type { validationErrors } from "@/lib/formSchemas"
 
 const incidentTypes = [
     'Blackmail',
@@ -85,7 +85,7 @@ export default function IncidentInfo({ formData, updateFormData, errors }: Incid
                 onCheckedChange={(checked) => {
                     const newTypes = checked
                     ? [...formData.incidentTypes, type]
-                    : formData.incidentTypes.filter((t:any) => t !== type)
+                    : formData.incidentTypes.filter((t) => t !== type)
                     updateFormData({ incidentTypes: newTypes })
                 }}
                 />
@@ -107,7 +107,7 @@ export default function IncidentInfo({ formData, updateFormData, errors }: Incid
                 onCheckedChange={(checked) => {
                     const newConnections = checked
                     ? [...formData.incidentConnections, connection]
-                    : formData.incidentConnections.filter((c:any) => c !== connection)
+                    : formData.incidentConnections.filter((c) => c !== connection)
                     updateFormData({ incidentConnections: newConnections })
                 }}
                 />

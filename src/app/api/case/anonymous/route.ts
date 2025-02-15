@@ -3,7 +3,7 @@ import { createAnonymousCase } from '../../queries/case';
 
 export async function POST(req:Request){
     try {
-        const ipAddress = await requestIp.getClientIp({
+        const ipAddress = requestIp.getClientIp({
             headers: Object.fromEntries(req.headers.entries())
         })
         const formData = await req.formData();

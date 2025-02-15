@@ -1,32 +1,10 @@
-"use client"
-
-import { Button } from "@/components/ui/button";
-import { useAnonymousReportStore } from "@/store/formstore";
-import { AnonymousReport } from "@/components/Report";
-import { useRouter } from "next/navigation";
+import CyberbullyingReportForm from "@/components/Report/ReportForm/ReportForm";
 
 const ReportPage = () => {
-  const router = useRouter();
-  const {isFormVisible,toggleForm} = useAnonymousReportStore()
-  const handleLoginRedirect = () => {
-    router.push('/sign-in')
-  }
   return(
-    <div className="container px-12 lg:px-32 py-12 lg:py-20">
-      <div>
-        Please consider that when you select anonymous reporting <span className="font-bold">we can&apos;t
-        get any action</span> regarding this incident.<span className="text-destructive">*</span> We only use anonymous
-        reports to make insights.
-      </div>
-      <Button
-        onClick={toggleForm}
-      >Anonymous reporting</Button>
-      <Button
-        onClick={handleLoginRedirect}
-      >Non-Anonymous reporting</Button>
-      {isFormVisible && (
-        <AnonymousReport/>
-      )}
+    <div>
+      <p className="text-center">Please consider Your anonymous reports are not subjected to take any action they are only for make insights <span className="text-red-600">*</span></p>
+      <CyberbullyingReportForm />
     </div>
   )
 }

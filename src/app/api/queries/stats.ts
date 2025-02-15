@@ -6,7 +6,7 @@ export async function getStats(){
         const totalRegisteredUsers = await prisma.user.count();
         const newCases = await prisma.case.count({
             where:{
-                status: 'NEW'
+                status: 'OPEN'
             }
         });
         const processingCases = await prisma.case.count({
