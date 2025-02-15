@@ -43,7 +43,7 @@ export async function POST(req:Request){
 
     if(eventType === 'user.created'){
         try {
-            const {email_addresses, primary_email_address_id} = evt.data;
+            const {email_addresses, primary_email_address_id,username} = evt.data;
             console.log('User created', email_addresses, primary_email_address_id);
 
             const primaryEmail = email_addresses.find(
@@ -58,6 +58,7 @@ export async function POST(req:Request){
             // Create user in database
             const newUser = await prisma.user.create({
                 data:{
+                    username: username!,
                     id:evt.data.id,
                     email:primaryEmail.email_address,
                     dateJoined: new Date(evt.data.created_at)

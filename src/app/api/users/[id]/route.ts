@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { deleteCasesByUser } from "../../queries/case";
 
 export async function PATCH(req:Request,route:{params:{id:string}}){
     try {
@@ -31,11 +32,12 @@ export async function DELETE(req:Request,route:{params:{id:string}}){
         const response = await clerk.users.deleteUser(id)
 
         if(response.id){
-            await prisma.user.delete({
+            const user = await prisma.user.delete({
                 where:{
                     id: response.id
                 }
             })
+            await deleteCasesByUser(user.id);
             return new Response("User Deleted Successfully",{status: 200});
         }
     } catch (error) {

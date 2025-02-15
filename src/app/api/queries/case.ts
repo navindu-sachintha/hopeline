@@ -8,6 +8,11 @@ import axios from "axios";
 import { addEvidence, addEvidenceAnonymous } from "./evidence";
 import { createAnonymousUser } from "./user";
 
+interface PaginationOptions {
+    page: number;
+    limit: number;
+}
+
 export async function createCase(userId: string, formData: FormData) {
     try {
         const files = formData.getAll('evidenceFiles') as File[];
@@ -116,7 +121,7 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
     }
 }
 
-export async function getCases(userId: string){
+export async function getCasesByUser(userId: string){
     try {
         return await prisma.case.findMany({
             where:{
@@ -194,7 +199,32 @@ export async function deleteCase(id:string){
         throw new Error(`Error deleting case with id ${id}`);
     }
 }
-
+export async function deleteCasesByUser(userId:string){
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id: userId
+            }
+        })
+        if(user){
+            const cases = await prisma.case.findMany({
+                where:{
+                    userId: userId
+                }
+            })
+            if(cases){
+                await Promise.all(
+                    cases.map(async (c) => {
+                        await deleteCase(c.id)
+                    })
+                )
+            }
+        }
+    } catch (error) {
+        console.error(`error deleting cases for user ${userId}`, error);
+        throw new Error(`Error deleting cases for user ${userId}`);
+    }
+}
 export async function getAllCases(){
     try {
         return await prisma.case.findMany({})
@@ -253,5 +283,54 @@ export async function processCaseEvidence(id:string){
     } catch (error) {
         console.error('Error processing evidence', error);
         throw new Error('Error processing evidence');
+    }
+}
+
+export async function getFilteredCasesPaginated(
+    status:string,
+    { page = 1, limit = 10 }:PaginationOptions
+){
+    try {
+        const skip = (page - 1) * limit;
+        const [cases, totalCases] = await Promise.all([
+            prisma.case.findMany({
+                skip,
+                take: limit,
+                where:{
+                    status: status as CaseStatus
+                },
+                select:{
+                    id:true,
+                    title:true,
+                    description:true,
+                    status:true,
+                    dateCreated:true,
+                    toxic:true,
+                    userId:true,
+                    reportedByUser:{
+                        select:{
+                            
+                        }
+                    },
+                    Evidence:{
+                        select:{
+                            url:true,
+                            uploadedAt:true,
+                            id:true
+                        }
+                    }
+                }
+            }),
+            prisma.case.count()
+        ])
+        return {
+            cases,
+            totalCases,
+            page,
+            totalPages: Math.ceil(totalCases / limit)
+        }
+    } catch (error) {
+        console.error('error getting cases paginated', error);
+        throw new Error('Error getting cases paginated');
     }
 }

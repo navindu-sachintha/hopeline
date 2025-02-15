@@ -14,6 +14,7 @@ export async function POST(req:Request){
         if(response.id){
             const user = await prisma.user.create({
                 data:{
+                    username: response.username!,
                     id: response.id,
                     email: response.emailAddresses[0]!.emailAddress,
                     dateJoined: new Date(response.createdAt),
