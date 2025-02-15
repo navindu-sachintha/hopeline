@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
-  const [limit, setLimit] = useState(10)
+  const [limit, setLimit] = useState(5)
   const [status, setStatus] = useState<CaseStatus>(CaseStatus.OPEN)
   const [totalPages, setTotalPages] = useState(1)
   const [cases, setCases] = useState<CaseData[]>([])
@@ -58,9 +58,9 @@ const CaseMngmt = () => {
           <SelectGroup>
             <SelectContent>
               <SelectItem value={CaseStatus.OPEN}>Open</SelectItem>
-              <SelectItem value={CaseStatus.PROCESSING} >Closed</SelectItem>
+              <SelectItem value={CaseStatus.PROCESSING} >Processing</SelectItem>
               <SelectItem value={CaseStatus.RESOLVED}>Resolved</SelectItem>
-              <SelectItem value={CaseStatus.REJECTED}>Processing</SelectItem>
+              <SelectItem value={CaseStatus.REJECTED}>Rejected</SelectItem>
             </SelectContent>
           </SelectGroup>
         </Select>
@@ -73,11 +73,25 @@ const CaseMngmt = () => {
             <TableHead>Username</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Date Created</TableHead>
+            <TableHead>
+            <Select value={limit.toString()} onValueChange={(value) => setLimit(parseInt(value))}>
+              <SelectTrigger>
+                <SelectValue placeholder='Show'/>
+              </SelectTrigger>
+              <SelectGroup>
+                <SelectContent>
+                  {[5,10,15,20].map((l) => (
+                    <SelectItem key={l} value={l.toString()}>{l}</SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectGroup>
+            </Select>
+            </TableHead>
           </TableRow>
         </TableHeader>
         {cases.length === 0 ? 
           <TableRow><TableCell>No cases found</TableCell></TableRow> : 
-          <TableBody>
+          <TableBody className='overflow-y-auto'>
           {cases.map((c) => (
             <TableRow key={c.id}>
               <TableCell>{c.title}</TableCell>
