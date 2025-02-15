@@ -7,7 +7,7 @@ import { BarChart2, FileText, PanelLeft, Settings, Users, X } from 'lucide-react
 import { ScrollArea } from '../ui/scroll-area'
 
 export default function AdminDashboard() {
-    const [activeTab, setActiveTab] = useState("users")
+    const [activeTab, setActiveTab] = useState("cases")
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen)

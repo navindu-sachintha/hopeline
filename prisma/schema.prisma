@@ -22,12 +22,13 @@ datasource db {
 }
 
 model User {
-  id         String     @id @default(uuid())
-  email      String     @unique
-  username   String     @unique
-  dateJoined DateTime?
-  cases      Case[]
-  Evidence   Evidence[]
+  id             String           @id @default(uuid())
+  email          String           @unique
+  username       String           @unique
+  dateJoined     DateTime?
+  cases          Case[]
+  Evidence       Evidence[]
+  CaseAssignment CaseAssignment[]
 }
 
 model AnonymousUser {
@@ -39,9 +40,9 @@ model AnonymousUser {
 }
 
 model Case {
-  id                    String         @id @default(uuid())
-  reportedByUser        User?          @relation(fields: [userId], references: [id])
-  reportedByAnonymous   AnonymousUser? @relation(fields: [anonymousId], references: [anonymousId])
+  id                    String           @id @default(uuid())
+  reportedByUser        User?            @relation(fields: [userId], references: [id])
+  reportedByAnonymous   AnonymousUser?   @relation(fields: [anonymousId], references: [anonymousId])
   title                 String
   description           String
   incidentHappenedTo    String
@@ -50,16 +51,17 @@ model Case {
   reporterConnection    String
   affectedConnection    String
   perpetratorConnection String
-  dateCreated           DateTime       @default(now())
-  dateUpdated           DateTime       @updatedAt
+  dateCreated           DateTime         @default(now())
+  dateUpdated           DateTime         @updatedAt
   userId                String?
   anonymousId           String?
-  status                CaseStatus     @default(OPEN)
-  toxic                 Boolean        @default(false)
+  status                CaseStatus       @default(OPEN)
+  toxic                 Boolean          @default(false)
   Evidence              Evidence[]
   anonymousReason       String[]
   consentToReport       Boolean
   consentToUpload       Boolean
+  CaseAssignment        CaseAssignment[]
 }
 
 model Evidence {
@@ -72,4 +74,13 @@ model Evidence {
   userId              String?
   anonymousId         String?
   uploadedAt          DateTime       @default(now())
+}
+
+model CaseAssignment {
+  id        String   @id @default(uuid())
+  case      Case     @relation(fields: [caseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  caseId    String
+  userId    String
+  createdAt DateTime @default(now())
 }

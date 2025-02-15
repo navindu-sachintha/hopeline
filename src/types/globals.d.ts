@@ -1,4 +1,5 @@
 import { User } from "@clerk/nextjs/server";
+import { CaseStatus } from "@prisma/client";
 
 export {}
 
@@ -84,9 +85,18 @@ declare global {
     reporterConnection: string;
     percepterConnection: string;
     affectedConnection: string;
+    incidentConnections: string[];
+    incidentTypes: string[];
     evidenceUrls: string[];
     description: string;
-    status: Status;
+    reportedByUser:{
+      username:string,
+      email:string
+    },
+    reportedByAnonymous:{
+      ipAddress:string
+    },
+    status: CaseStatus;
     category: string;
     dateCreated: string;
     dateUpdated: string;

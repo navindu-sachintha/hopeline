@@ -2,14 +2,13 @@
 import { Incident } from "@/components/shared/CaseData";
 import type { Roles } from "@/types/globals";
 import { useUser } from "@clerk/nextjs";
-import axios from "axios"
-import { useRouter } from "next/navigation";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Case({params}:{
     params: {id:string}
 }) {
-    const [caseData, setCaseData] = useState<Case|null>(null);
+    const [caseData, setCaseData] = useState<CaseData|null>(null);
     const {id} = params;
     const user = useUser()
     const role = user.user?.publicMetadata.role
@@ -19,7 +18,7 @@ export default function Case({params}:{
             try {
                 const response = await axios.get(`/api/case/${id}`);
                 if (response.status === 200) {
-                    const caseData = response.data as Case;
+                    const caseData = response.data as CaseData;
                     setCaseData(caseData);
                 }
     
