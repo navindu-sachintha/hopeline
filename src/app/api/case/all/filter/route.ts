@@ -1,15 +1,17 @@
 import { getFilteredCasesPaginated } from "@/app/api/queries/case";
 import { auth } from "@clerk/nextjs/server";
 import { CaseStatus } from "@prisma/client";
+import type { NextRequest } from "next/server";
 
-export async function GET(req:Request){
+export const dynamic = "force-dynamic";
+
+export async function GET(req:NextRequest){
     try {
-        const url = new URL(req.url);
-        const params = new URLSearchParams(url.search);
+        const { searchParams } = new URL(req.url);
 
-        const status = params.get('status') ?? CaseStatus.OPEN;
-        const page = parseInt(params.get('page') ?? '1', 10);
-        const limit = parseInt(params.get('limit') ?? '10', 10);
+        const status = searchParams.get("status") ?? CaseStatus.OPEN;
+        const page = parseInt(searchParams.get("page") ?? "1", 10);
+        const limit = parseInt(searchParams.get("limit") ?? "10", 10);
 
         const {sessionClaims} = await auth();
         if (sessionClaims?.metadata.role === 'admin'){
