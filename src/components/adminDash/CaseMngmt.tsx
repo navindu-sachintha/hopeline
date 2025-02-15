@@ -5,12 +5,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { CaseStatus } from '@prisma/client'
 import axios from 'axios'
 import { Button } from '../ui/button'
+import { Label } from '../ui/label'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [limit, setLimit] = useState(10)
-  const [status, setStatus] = useState(CaseStatus.OPEN)
+  const [status, setStatus] = useState<CaseStatus>(CaseStatus.OPEN)
   const [totalPages, setTotalPages] = useState(1)
   const [cases, setCases] = useState<CaseData[]>([])
 
@@ -47,6 +49,22 @@ const CaseMngmt = () => {
   }
   return (
     <div className="overflow-x-auto">
+      <div className="mb-4">
+        <Label>Filter By Status</Label>
+        <Select value={status} onValueChange={(value) => setStatus(value as CaseStatus)}>
+          <SelectTrigger>
+            <SelectValue placeholder='Select a Status'/>
+          </SelectTrigger>
+          <SelectGroup>
+            <SelectContent>
+              <SelectItem value={CaseStatus.OPEN}>Open</SelectItem>
+              <SelectItem value={CaseStatus.PROCESSING} >Closed</SelectItem>
+              <SelectItem value={CaseStatus.RESOLVED}>Resolved</SelectItem>
+              <SelectItem value={CaseStatus.REJECTED}>Processing</SelectItem>
+            </SelectContent>
+          </SelectGroup>
+        </Select>
+      </div>
         <Table>
         <TableHeader>
           <TableRow>
@@ -57,7 +75,9 @@ const CaseMngmt = () => {
             <TableHead>Date Created</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        {cases.length === 0 ? 
+          <TableRow><TableCell>No cases found</TableCell></TableRow> : 
+          <TableBody>
           {cases.map((c) => (
             <TableRow key={c.id}>
               <TableCell>{c.title}</TableCell>
@@ -78,7 +98,9 @@ const CaseMngmt = () => {
               </TableCell>
             </TableRow>
           ))}
-        </TableBody>
+          </TableBody>
+        }
+        
         </Table>
         <div>
           <Button size='sm' onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
