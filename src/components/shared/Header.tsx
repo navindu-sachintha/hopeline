@@ -11,12 +11,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
-import { UserButton, useUser, useClerk } from '@clerk/nextjs'
+import { useUser, useClerk } from '@clerk/nextjs'
 
 const baseNavItems = [
   { name: "Home", href: "/" },
   { name: "Awareness", href: "/awareness" },
-  { name: "Report", href: "/report" },
 ]
 
 export default function Component() {
@@ -104,6 +103,16 @@ export default function Component() {
               >
                 Sign Out
               </Button>
+            )}
+            {!isSignedIn && (
+              <Link href="/sign-in">
+                <Button
+                variant='default'
+                className="text-sm font-medium  ml-auto"
+                >
+                  Sign In
+                </Button>
+              </Link>
             )}
           </nav>
         </div>

@@ -219,6 +219,7 @@ export function CreateCaseForm() {
                 {errors.allegedPerpetratorConnection && <p className="text-red-500">{errors.allegedPerpetratorConnection.message}</p>}
             </div>
             <div className='space-y-4'>
+                <h3 className="text-lg font-medium">Evidence You have with you:</h3>
                 <FileDropzone onDrop={addFiles} />
                 <FileList files={files} onRemove={removeFile} />
             </div>

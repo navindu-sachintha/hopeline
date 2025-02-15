@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { createCase, getCases } from "../queries/case";
+import { createCase, getCasesByUser } from "../queries/case";
 
 export async function POST(req:Request){
     try {
@@ -21,7 +21,7 @@ export async function GET(){
     try {
         const { userId } = await auth();
         if (userId){
-            const cases = await getCases(userId);
+            const cases = await getCasesByUser(userId);
             return new Response(JSON.stringify(cases), {status: 200});
         }
         return new Response('Unauthorized', {status: 401});

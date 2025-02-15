@@ -10,7 +10,7 @@ generator client {
 }
 
 enum CaseStatus {
-  NEW
+  OPEN
   PROCESSING
   REJECTED
   RESOLVED
@@ -22,29 +22,54 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  email      String    @unique
+  id         String     @id @default(uuid())
+  email      String     @unique
+  username   String     @unique
   dateJoined DateTime?
   cases      Case[]
+  Evidence   Evidence[]
+}
+
+model AnonymousUser {
+  anonymousId String     @id @default(uuid())
+  ipAddress   String
+  createdAt   DateTime   @default(now())
+  Case        Case[]
+  Evidence    Evidence[]
 }
 
 model Case {
-  id                  String     @id @default(uuid())
-  user                User       @relation(fields: [userId], references: [id])
-  title               String
-  incidentHappenedTo  String
-  description         String
-  incidentDescription String
-  incidentConnection  String
-  extractedString     String
-  reporterConnection  String
-  affectedConnection  String
-  perceptorConnection String
-  evidenceUrls        String[]
-  anonymous           Boolean    @default(false)
-  dateCreated         DateTime   @default(now())
-  dateUpdated         DateTime   @updatedAt
-  userId              String
-  status              CaseStatus @default(NEW)
-  toxic               Boolean    @default(false)
+  id                    String         @id @default(uuid())
+  reportedByUser        User?          @relation(fields: [userId], references: [id])
+  reportedByAnonymous   AnonymousUser? @relation(fields: [anonymousId], references: [anonymousId])
+  title                 String
+  description           String
+  incidentHappenedTo    String
+  incidentTypes         String[]
+  incidentConnections   String[]
+  reporterConnection    String
+  affectedConnection    String
+  perpetratorConnection String
+  dateCreated           DateTime       @default(now())
+  dateUpdated           DateTime       @updatedAt
+  userId                String?
+  anonymousId           String?
+  status                CaseStatus     @default(OPEN)
+  toxic                 Boolean        @default(false)
+  Evidence              Evidence[]
+  anonymousReason       String[]
+  consentToReport       Boolean
+  consentToUpload       Boolean
+}
+
+model Evidence {
+  id                  String         @id @default(uuid())
+  case                Case           @relation(fields: [caseId], references: [id])
+  uploadedBy          User?          @relation(fields: [userId], references: [id])
+  uploadedByAnonymous AnonymousUser? @relation(fields: [anonymousId], references: [anonymousId])
+  caseId              String
+  url                 String
+  userId              String?
+  anonymousId         String?
+  uploadedAt          DateTime       @default(now())
 }

@@ -124,7 +124,7 @@ export default function SignIn() {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="justify-center">
+        <CardFooter className="justify-center flex-col">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link
@@ -132,6 +132,15 @@ export default function SignIn() {
               className="font-medium text-primary hover:underline"
             >
               Sign up
+            </Link>
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Forgot Your password?{" "}
+            <Link
+              href="/forgot-password"
+              className="font-medium text-primary hover:underline"
+            >
+              Forgot password
             </Link>
           </p>
         </CardFooter>
