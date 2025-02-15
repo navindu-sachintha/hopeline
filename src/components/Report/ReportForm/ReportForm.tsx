@@ -12,11 +12,13 @@ import { validateForm, validationErrors } from "@/lib/formSchemas"
 import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
 
 export default function CyberbullyingReportForm() {
   const {toast} = useToast()
   const {isSignedIn, user} = useUser()
   const [step, setStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<ReportFormData>({
     reporterType: 'user',
     email: user?.primaryEmailAddress?.emailAddress ?? '',
@@ -69,12 +71,14 @@ export default function CyberbullyingReportForm() {
     setStep((prev) => prev + 1)
   }
   const handleSubmit = async () => {
+    setIsSubmitting(true)
     if (formData.reporterType === "user" && !isSignedIn) {
       toast({
         title: "Authentication required",
         description: "Please log in to submit a report.",
         variant: "destructive",
       })
+      setIsSubmitting(false)
       return
     }
 
@@ -90,6 +94,7 @@ export default function CyberbullyingReportForm() {
                 }}
             >Agree</ToastAction>
       })
+      setIsSubmitting(false)
       return
     }
 
@@ -121,18 +126,21 @@ export default function CyberbullyingReportForm() {
 
       toast({
         title: "Report submitted",
-        description: "Your cyberbullying report has been successfully submitted.",
+        description: "Your report has been successfully submitted.",
       })
+      setIsSubmitting(false)
       if(isSignedIn){
         router.push('/dashboard')
+      }else{
+        router.push('/')
       }
-      router.push('/')
     } catch (error) {
       toast({
         title: "Submission failed",
         description: "There was an error submitting your report. Please try again.",
         variant: "destructive",
       })
+      setIsSubmitting(false)
     }
   }
 
@@ -164,7 +172,10 @@ export default function CyberbullyingReportForm() {
         {step < 3 ? (
           <Button onClick={handleNext} disabled={formData.reporterType === 'user' && !isSignedIn}>Next</Button>
         ) : (
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="animate-spin"/>}
+            {isSubmitting? 'Submitting': 'Submit'}
+          </Button>
         )}
       </CardFooter>
     </Card>
