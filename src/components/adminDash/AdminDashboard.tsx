@@ -5,6 +5,7 @@ import CaseMngmt from './CaseMngmt'
 import { Button } from '../ui/button'
 import { BarChart2, FileText, PanelLeft, Settings, Users, X } from 'lucide-react'
 import { ScrollArea } from '../ui/scroll-area'
+import Analytics from './Analytics'
 
 export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState("cases")
@@ -33,6 +34,8 @@ export default function AdminDashboard() {
             return <UserMngmt />
           case "cases":
             return <CaseMngmt/>
+          case "analytics":
+            return <Analytics />
           default:
             return null
         }
