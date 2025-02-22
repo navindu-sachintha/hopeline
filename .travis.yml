@@ -1,0 +1,14 @@
+    dist: jammy
+    language: node_js
+
+    node_js:
+
+        - '20'
+  
+    install:
+        - npm install -g pnpm
+        - pnpm install
+
+    script:
+
+        - pnpm run build
