@@ -16,6 +16,10 @@ const config = {
         protocol: 'https',
         hostname: 'aqurocm.blob.core.windows.net',
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com'
+      }
     ],
   },
   experimental:{
