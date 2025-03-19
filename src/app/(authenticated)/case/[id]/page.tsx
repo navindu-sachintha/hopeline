@@ -1,6 +1,5 @@
 "use client"
-import CaseAdminVIew from "@/components/shared/CaseAdminVIew";
-import CaseProView from "@/components/shared/CaseProView";
+import CaseVIew from "@/components/shared/CaseVIew";
 import type { Roles } from "@/types/globals";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
@@ -34,8 +33,7 @@ export default function Case({params}:{
     
   return (
     <div>
-        {role === 'admin' && <CaseAdminVIew incident={caseData}/>}
-        {role === 'proffessional' && <CaseProView incident={caseData}/>}
+        <CaseVIew incident={caseData} role={role}/>
     </div>
   )
 }
