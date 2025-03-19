@@ -1,5 +1,5 @@
 "use client"
-import { Incident } from "@/components/shared/CaseData";
+import CaseVIew from "@/components/shared/CaseVIew";
 import type { Roles } from "@/types/globals";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
@@ -11,7 +11,7 @@ export default function Case({params}:{
     const [caseData, setCaseData] = useState<CaseData|null>(null);
     const {id} = params;
     const user = useUser()
-    const role = user.user?.publicMetadata.role
+    const role = user.user?.publicMetadata.role as Roles;
 
     useEffect(() => {
         const fetchCaseData = async () => {
@@ -33,10 +33,7 @@ export default function Case({params}:{
     
   return (
     <div>
-        <Incident
-            incident={caseData}
-            role={role as Roles}
-        />
+        <CaseVIew incident={caseData} role={role}/>
     </div>
   )
 }

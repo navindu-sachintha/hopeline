@@ -104,8 +104,8 @@ const CaseMngmt = () => {
                 {c.status}
               </span>
               </TableCell>
-              <TableCell>{c.reportedByUser ? c.reportedByUser.username : `Anonymous : ${c.reportedByAnonymous.ipAddress}`}</TableCell>
-              <TableCell>{c.reportedByUser ? c.reportedByUser.email : `Anonymous`}</TableCell>
+              <TableCell>{c.reportedByUser ? c.reportedByUser.username : 'Anonymous'}</TableCell>
+              <TableCell>{c.reportedByUser ? c.reportedByUser.email : `IP Address: ${c.reportedByAnonymous.ipAddress}`}</TableCell>
               <TableCell>{new Date(c.dateCreated).toLocaleDateString()}</TableCell>
               <TableCell>
                 <Button variant='link' onClick={() => router.push(`/case/${c.id}`)}>
