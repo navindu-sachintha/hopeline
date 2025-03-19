@@ -23,6 +23,21 @@ export default clerkMiddleware(
         return NextResponse.redirect(new URL('/admin/dashboard',req.url));
       }
 
+      // redirect user to user dashboard
+      if( role === 'user' && req.nextUrl.pathname === '/dashboard'){
+        return NextResponse.redirect(new URL('/user/dashboard',req.url));
+      }
+
+      // redirect professional user to professional dashboard
+      if( role === 'proffessional' && req.nextUrl.pathname === '/dashboard'){
+        return NextResponse.redirect(new URL('/professional/dashboard',req.url));
+      }
+
+      // redirect student rep to student rep dashboard
+      if(role === 'student_rep' && req.nextUrl.pathname === '/dashboard'){
+        return NextResponse.redirect(new URL('/studentrep/dashboard',req.url));
+      }
+
       // redirect to user dashboard if user is not admin
       if( role !== 'admin' && isAdminRoute(req)){
         return NextResponse.redirect(new URL('/dashboard', req.url));

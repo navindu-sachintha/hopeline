@@ -36,7 +36,7 @@ const EvidenceView = ({urls}: EvidenceViewProps) => {
         <section className="p-6 rounded-lg shadow">
             {urls.length > 0 ? (
                 <div>
-                    <h2 className="text-lg font-semibold mb-4">Incident Details</h2>
+                    <h2 className="text-lg font-semibold mb-4">Evidence</h2>
                     {/* Thumbnail Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-4">
                         {urls.map((url, index) => (
@@ -58,7 +58,7 @@ const EvidenceView = ({urls}: EvidenceViewProps) => {
 
                     {/* Image Popup Dialog */}
                     <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-                        <DialogContent className="max-w-[90vw] h-[90vh] p-0 relative">
+                        <DialogContent className="max-w-[90vw] h-[90vh] p-0">
                             {selectedImage && (
                                 <>
                                     <div className="w-full h-full flex items-center justify-center">
