@@ -12,6 +12,8 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     AI_INFERENCE_API_URL: z.string(),
+    MAILTRAP_TOKEN: z.string(),
+    EMAIL_FROM: z.string()
   },
 
   /**
@@ -31,6 +33,8 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     AI_INFERENCE_API_URL: process.env.AI_INFERENCE_API_URL,
+    MAILTRAP_TOKEN: process.env.MAILTRAP_TOKEN,
+    EMAIL_FROM: process.env.EMAIL_FROM
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
