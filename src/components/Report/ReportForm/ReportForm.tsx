@@ -19,6 +19,7 @@ export default function CyberbullyingReportForm() {
   const {isSignedIn, user} = useUser()
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [captchaValue, setCaptchaValue] = useState<string | undefined>(undefined)
   const [formData, setFormData] = useState<ReportFormData>({
     reporterType: 'user',
     email: user?.primaryEmailAddress?.emailAddress ?? '',
@@ -98,6 +99,16 @@ export default function CyberbullyingReportForm() {
       return
     }
 
+    if (!captchaValue) {
+      toast({
+        title: "Captcha required",
+        description: "Please complete the captcha.",
+        variant: "destructive",
+      })
+      setIsSubmitting(false)
+      return
+    }
+
     const endpoint = formData.reporterType === "anonymous" ? "/api/case/anonymous" : "/api/case"
 
     try {
@@ -151,7 +162,7 @@ export default function CyberbullyingReportForm() {
       case 2:
         return <IncidentInfo formData={formData} updateFormData={updateFormData} errors={validationErrors}/>
       case 3:
-        return <EvidenceUpload formData={formData} updateFormData={updateFormData} errors={validationErrors}/>
+        return <EvidenceUpload formData={formData} updateFormData={updateFormData} errors={validationErrors} onRecaptchaRef={(ref) => ref && setCaptchaValue(ref.getValue() ?? undefined)}/>
       default:
         return null
     }
