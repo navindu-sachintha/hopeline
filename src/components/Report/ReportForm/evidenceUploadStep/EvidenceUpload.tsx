@@ -1,17 +1,21 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
+import ReCAPTCHA from 'react-google-recaptcha'
 import { validationErrors } from "@/lib/formSchemas"
+import { env } from "@/env"
 
 interface StepThreeEvidenceConsentProps {
   formData: ReportFormData
   updateFormData: (data: Partial<ReportFormData>) => void;
+  onRecaptchaRef?: (ref: ReCAPTCHA | null) => void;
   errors: validationErrors | null;
 }
 
-export default function EvidenceUpload({ formData, updateFormData, errors }: StepThreeEvidenceConsentProps) {
+export default function EvidenceUpload({ formData, updateFormData, errors,onRecaptchaRef }: StepThreeEvidenceConsentProps) {
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
   const [files, setFiles] = useState<File[]>([])
 
   const onDrop = useCallback((acceptedFiles:File[]) => {
@@ -33,6 +37,12 @@ export default function EvidenceUpload({ formData, updateFormData, errors }: Ste
     setFiles(files.filter((file) => file !== fileToRemove))
   }
 
+  useEffect(() => {
+    if (onRecaptchaRef){
+      onRecaptchaRef(recaptchaRef.current)
+    }
+  }, [onRecaptchaRef])
+
   return (
     <div className="space-y-4">
       <div>
@@ -47,6 +57,9 @@ export default function EvidenceUpload({ formData, updateFormData, errors }: Ste
             onCheckedChange={(checked) => updateFormData({ consentToUpload: checked === true })}
           />
           <Label htmlFor="consentToUploadEvidence">I consent to upload evidence related to this case</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <ReCAPTCHA ref={recaptchaRef} sitekey={env.NEXT_PUBLIC_CAPTCHA_SITE_KEY} />
         </div>
       </div>
 
