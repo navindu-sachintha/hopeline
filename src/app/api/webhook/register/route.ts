@@ -2,6 +2,7 @@ import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { type WebhookEvent } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
+import { EmailService } from '@/services/email';
 
 export async function POST(req:Request){
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -64,6 +65,15 @@ export async function POST(req:Request){
                     dateJoined: new Date(evt.data.created_at)
                 }
             })
+            console.log('User created in database', newUser);
+            // Send signup confirmation email
+            const email = new EmailService();
+            if(newUser){
+                await email.sendSignupConfirmation({
+                    to: newUser.email,
+                    username: newUser.username
+                })
+            }
 
             console.log('User created in database', newUser);
 

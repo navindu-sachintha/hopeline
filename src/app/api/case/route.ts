@@ -1,14 +1,34 @@
 import { auth } from "@clerk/nextjs/server";
 import { createCase, getCasesByUser } from "../queries/case";
+import { getUserbyId } from "../queries/user";
+import { EmailService } from "@/services/email";
 
 export async function POST(req:Request){
     try {
+        let newCase;
         const {userId} = await auth();
+        const user = await getUserbyId(userId!)
         if (userId) {
             const formData = await req.formData();
-            await createCase(userId, formData);
+            newCase = await createCase(userId, formData);
         } else {
             return new Response('Unauthorized', {status: 401});
+        }
+        const email = new EmailService();
+        
+        if (user?.email) {
+            await email.sendCaseCreation({
+                to: user.email, 
+                username: user?.username,
+                caseId: newCase.id,
+                caseTitle: newCase.title
+            });
+
+            await email.caseRecieved({
+                username: user.username,
+                caseId: newCase.id,
+                caseTitle: newCase.title
+            })
         }
         return new Response('Case created', {status: 200});
     } catch (error) {
