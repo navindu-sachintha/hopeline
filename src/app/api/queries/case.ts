@@ -59,7 +59,7 @@ export async function createCase(userId: string, formData: FormData) {
             }
         }
 
-        return newCase.id;
+        return newCase;
     } catch (error) {
         console.error('Error creating case', error);
         throw new Error('Error creating case');
@@ -114,7 +114,7 @@ export async function createAnonymousCase( formData: FormData, ipAddress: string
             }
         }
 
-        return newCase.id;
+        return newCase;
     } catch (error) {
         console.error('Error creating case', error);
         throw new Error('Error creating case');
