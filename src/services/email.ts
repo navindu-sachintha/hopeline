@@ -1,23 +1,20 @@
 import nodemailer from 'nodemailer';
-import Handlebars from 'handlebars';
-import { MailtrapTransport } from 'mailtrap'
-import fs from 'fs';
-import path from 'path';
 import { env } from '@/env';
 
 export class EmailService{
     private transporter: nodemailer.Transporter;
-    private templateDir: string;
 
-    constructor(config?:{
-        mailtrapToken?: string,
-        templateDir?: string
-    }){
-        this.transporter = nodemailer.createTransport(MailtrapTransport({
-            token: env.MAILTRAP_TOKEN
-        }));
-
-        this.templateDir = config?.templateDir ?? path.join(process.cwd(),'src/templates/emails')
+    constructor(){
+        this.transporter = nodemailer.createTransport({
+            pool:true,
+            host: env.SMTP_HOST,
+            port:465,
+            secure: true,
+            auth:{
+                user: env.SMTP_USER,
+                pass: env.SMTP_PASS
+            }
+        });
     }
 
     private async sendEmail(options: {
@@ -30,7 +27,7 @@ export class EmailService{
             const { to, subject, html, from } = options;
             
             await this.transporter.sendMail({
-                from: from ?? env.EMAIL_FROM,
+                from: from ?? env.SMTP_USER,
                 to,
                 subject,
                 html
@@ -43,19 +40,6 @@ export class EmailService{
         }
     }
 
-    private async getTemplate(templateName: string, data: Record<string, unknown>){
-        const templatePath = path.join(this.templateDir, `${templateName}.hbs`);
-
-        try {
-            const templateContent = await fs.promises.readFile(templatePath, 'utf-8');
-            const template = Handlebars.compile(templateContent);
-            return template(data);
-        } catch (error) {
-            console.error(`Error loading email template: ${templateName}`, error);
-            throw new Error(`Failed to load email template: ${templateName}`);
-        }
-    }
-
     async sendSignupConfirmation(options:{
         to: string,
         username: string,
@@ -63,12 +47,15 @@ export class EmailService{
         try {
             const {to, username} = options;
 
-            const html = await this.getTemplate('signupConfirmation', {username})
-
             await this.sendEmail({
                 to,
                 subject: 'Welcome to Hopeline!',
-                html
+                html:`
+                    <h1>Welcome to Hopeline!</h1>
+                    <p>Hi ${username},</p>
+                    <p>Thank you for signing up for Hopeline. We are excited to have you on board!</p>
+                    <p>Thank you for using Hopeline!</p>
+                `
             })
             return true;
         } catch (error) {
@@ -86,12 +73,19 @@ export class EmailService{
         try {
             const {to, username, caseId, caseTitle} = options;
 
-            const html = await this.getTemplate('caseCreation', {username, caseId, caseTitle})
-
             await this.sendEmail({
                 to,
                 subject: "Your case has been created! - Hopeline",
-                html
+                html: `
+                    <h1>Case Created</h1>
+                    <p>Hi ${username},</p>
+                    <p>Your case has been created successfully. Here are the details:</p>
+                    <ul>
+                        <li>Case ID: ${caseId}</li>
+                        <li>Case Title: ${caseTitle}</li>
+                    </ul>
+                    <p>Thank you for using Hopeline!</p>
+                `
             })
             return true;
         } catch (error) {
@@ -101,21 +95,26 @@ export class EmailService{
     }
 
     async caseRecieved(options:{
-        to:string;
         username:string;
         caseId: string;
         caseTitle: string;
-        reporter: string;
     }):Promise<boolean>{
         try {
-            const {to, username, caseId, caseTitle, reporter} = options;
-
-            const html = await this.getTemplate('caseRecieved', {username, caseId, caseTitle, reporter});
+            const {username, caseId, caseTitle} = options;
 
             await this.sendEmail({
-                to,
+                to: env.SMTP_USER,
                 subject: `A case recieved - ${caseTitle} from ${username} - Hopeline`,
-                html
+                html:`
+                    <h1>New Case Recieved</h1>
+                    <p>Hello,</p>
+                    <p>A new case has been reported by ip address ${username}. Here are the details:</p>
+                    <ul>
+                        <li>Case ID: ${caseId}</li>
+                        <li>Case Title: ${caseTitle}</li>
+                    </ul>
+                    <p>Thank you for using Hopeline!</p>
+                `
             })
             return true;
         } catch (error) {
