@@ -24,7 +24,9 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
-    NEXT_PUBLIC_CAPTCHA_SITE_KEY: z.string()
+    NEXT_PUBLIC_CAPTCHA_SITE_KEY: z.string(),
+    NEXT_PUBLIC_ANONYMOUS_REPORT_API_ENPOINT: z.string(),
+    NEXT_PUBLIC_REPORT_API_ENPOINT: z.string(),
   },
 
   /**
@@ -39,6 +41,8 @@ export const env = createEnv({
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_USER: process.env.SMTP_USER,
     SMTP_PASS: process.env.SMTP_PASS,
+    NEXT_PUBLIC_ANONYMOUS_REPORT_API_ENPOINT: process.env.NEXT_PUBLIC_ANONYMOUS_REPORT_API_ENPOINT,
+    NEXT_PUBLIC_REPORT_API_ENPOINT: process.env.NEXT_PUBLIC_REPORT_API_ENPOINT,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

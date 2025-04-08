@@ -66,16 +66,15 @@ export async function POST(req:Request){
                 }
             })
             console.log('User created in database', newUser);
+
             // Send signup confirmation email
             const email = new EmailService();
-            if(newUser){
-                await email.sendSignupConfirmation({
-                    to: newUser.email,
-                    username: newUser.username
-                })
-            }
+            await email.sendSignupConfirmation({
+                to: newUser.email,
+                username: newUser.username
+            })
+            console.log('Signup confirmation email sent');
 
-            console.log('User created in database', newUser);
 
         } catch (error) {
             return new Response('Error creating user',{status: 500});

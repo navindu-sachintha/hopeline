@@ -13,6 +13,7 @@ import { useUser } from "@clerk/nextjs"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
+import { env } from "@/env"
 
 export default function CyberbullyingReportForm() {
   const {toast} = useToast()
@@ -99,17 +100,17 @@ export default function CyberbullyingReportForm() {
       return
     }
 
-    if (!captchaValue) {
-      toast({
-        title: "Captcha required",
-        description: "Please complete the captcha.",
-        variant: "destructive",
-      })
-      setIsSubmitting(false)
-      return
-    }
+    // if (!captchaValue) {
+    //   toast({
+    //     title: "Captcha required",
+    //     description: "Please complete the captcha.",
+    //     variant: "destructive",
+    //   })
+    //   setIsSubmitting(false)
+    //   return
+    // }
 
-    const endpoint = formData.reporterType === "anonymous" ? "/api/case/anonymous" : "/api/case"
+    const endpoint = formData.reporterType === "anonymous" ? env.NEXT_PUBLIC_ANONYMOUS_REPORT_API_ENPOINT : env.NEXT_PUBLIC_REPORT_API_ENPOINT
 
     try {
         const data = new FormData();
