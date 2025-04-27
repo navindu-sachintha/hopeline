@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { useRouter } from 'next/navigation'
+import { CaseAssignment } from '../shared/CaseAssignment'
 
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
@@ -108,6 +109,9 @@ const CaseMngmt = () => {
               <TableCell>{c.reportedByUser ? c.reportedByUser.email : `IP Address: ${c.reportedByAnonymous.ipAddress}`}</TableCell>
               <TableCell>{new Date(c.dateCreated).toLocaleDateString()}</TableCell>
               <TableCell>
+                {c.status === 'OPEN' && (
+                  <CaseAssignment caseId={c.id} caseTitle={c.title}/>
+                )}
                 <Button variant='link' onClick={() => router.push(`/case/${c.id}`)}>
                   View
                 </Button>

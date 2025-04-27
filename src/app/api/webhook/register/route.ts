@@ -1,6 +1,6 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
-import { type WebhookEvent } from '@clerk/nextjs/server';
+import { clerkClient, type WebhookEvent } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 import { EmailService } from '@/services/email';
 
@@ -47,6 +47,13 @@ export async function POST(req:Request){
             const {email_addresses, primary_email_address_id,username} = evt.data;
             console.log('User created', email_addresses, primary_email_address_id);
 
+            const clerk = await clerkClient()
+            const user = await clerk.users.updateUserMetadata(id!,{
+                publicMetadata:{
+                    role: 'user'
+                }
+            })
+
             const primaryEmail = email_addresses.find(
                 (email) => email.id === primary_email_address_id
             )
@@ -66,16 +73,15 @@ export async function POST(req:Request){
                 }
             })
             console.log('User created in database', newUser);
+
             // Send signup confirmation email
             const email = new EmailService();
-            if(newUser){
-                await email.sendSignupConfirmation({
-                    to: newUser.email,
-                    username: newUser.username
-                })
-            }
+            await email.sendSignupConfirmation({
+                to: newUser.email,
+                username: newUser.username
+            })
+            console.log('Signup confirmation email sent');
 
-            console.log('User created in database', newUser);
 
         } catch (error) {
             return new Response('Error creating user',{status: 500});
