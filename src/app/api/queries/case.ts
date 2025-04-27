@@ -364,3 +364,78 @@ export async function getFilteredCasesPaginated(
         throw new Error('Error getting cases paginated');
     }
 }
+
+export async function assignCase(caseId:string, userId:string){
+    try {
+        const existingCase = await prisma.case.findUnique({
+            where: {
+              id: caseId
+            }
+          });
+      
+          if (!existingCase) {
+            throw new Error(`Case with ID ${caseId} not found`);
+          }
+      
+          // Check if user exists
+          const user = await prisma.user.findUnique({
+            where: {
+              id: userId
+            }
+          });
+      
+          if (!user) {
+            throw new Error(`User with ID ${userId} not found`);
+          }
+      
+          // Check if the case is already assigned to this user
+          const existingAssignment = await prisma.caseAssignment.findFirst({
+            where: {
+              caseId: caseId,
+              userId: userId
+            }
+          });
+      
+          if (existingAssignment) {
+            throw new Error(`Case is already assigned to this user`);
+          }
+
+          const caseAssignment = await prisma.caseAssignment.create({
+            data: {
+              caseId: caseId,
+              userId: userId,
+            }
+          });
+      
+          await prisma.case.update({
+            where: {
+              id: caseId
+            },
+            data: {
+              status: CaseStatus.PROCESSING
+            }
+          });
+      
+          return caseAssignment;
+    } catch (error) {
+        console.error(`Error assigning case ${caseId} to user ${userId}:`, error);
+        throw new Error(`Error assigning case: ${(error as Error).message}`);
+    }
+}
+
+export async function updateCaseStatus(caseId:string, status:CaseStatus){
+    try {
+        const updatedCase = await prisma.case.update({
+            where:{
+                id: caseId
+            },
+            data:{
+                status: status
+            }
+        })
+        return updatedCase;
+    } catch (error) {
+        console.error(`Error updating case ${caseId} status to ${status}:`, error);
+        throw new Error(`Error updating case status: ${(error as Error).message}`);
+    }
+}

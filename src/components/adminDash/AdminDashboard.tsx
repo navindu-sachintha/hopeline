@@ -64,12 +64,6 @@ export default function AdminDashboard() {
               isActive={activeTab === "users"}
               onClick={() => setActiveTab("users")}
             />
-            <NavItem
-              icon={Settings}
-              label="System Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => setActiveTab("settings")}
-            />
           </nav>
         </ScrollArea>
       </aside>

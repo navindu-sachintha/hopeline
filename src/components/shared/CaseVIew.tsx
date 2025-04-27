@@ -59,7 +59,7 @@ const CaseVIew = ({incident, role}:CaseAdminVIewProps) => {
             </div>
           </div>
         </section>
-        <EvidenceView urls={incident.Evidence.map((e) => e.url)}/>
+        <EvidenceView role={role} urls={incident.Evidence.map((e) => e.url)}/>
         <CaseActionView caseId={incident.id} role={role} />
       </div>
     </div>

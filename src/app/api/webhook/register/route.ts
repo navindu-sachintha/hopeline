@@ -1,6 +1,6 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
-import { type WebhookEvent } from '@clerk/nextjs/server';
+import { clerkClient, type WebhookEvent } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 import { EmailService } from '@/services/email';
 
@@ -46,6 +46,13 @@ export async function POST(req:Request){
         try {
             const {email_addresses, primary_email_address_id,username} = evt.data;
             console.log('User created', email_addresses, primary_email_address_id);
+
+            const clerk = await clerkClient()
+            const user = await clerk.users.updateUserMetadata(id!,{
+                publicMetadata:{
+                    role: 'user'
+                }
+            })
 
             const primaryEmail = email_addresses.find(
                 (email) => email.id === primary_email_address_id
