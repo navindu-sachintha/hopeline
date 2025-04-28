@@ -109,12 +109,12 @@ const CaseMngmt = () => {
               <TableCell>{c.reportedByUser ? c.reportedByUser.email : `IP Address: ${c.reportedByAnonymous.ipAddress}`}</TableCell>
               <TableCell>{new Date(c.dateCreated).toLocaleDateString()}</TableCell>
               <TableCell>
-                {c.status === 'OPEN' && (
-                  <CaseAssignment caseId={c.id} caseTitle={c.title}/>
-                )}
                 <Button variant='link' onClick={() => router.push(`/case/${c.id}`)}>
                   View
                 </Button>
+                {c.status === 'OPEN' && c.reportedByUser && (
+                  <CaseAssignment caseId={c.id} caseTitle={c.title}/>
+                )}
               </TableCell>
             </TableRow>
           ))}
