@@ -74,7 +74,7 @@ export const EditUserModal = ({onOpen, onClose, user}: EditUserModalProps) => {
                                     <SelectItem value='admin'>Admin</SelectItem>
                                     <SelectItem value='user'>User</SelectItem>
                                     <SelectItem value='student_rep'>Student Rep</SelectItem>
-                                    <SelectItem value='proffessional'>Proffessional</SelectItem>
+                                    <SelectItem value='professional'>Professional</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
