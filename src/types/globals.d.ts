@@ -4,7 +4,7 @@ import { CaseStatus } from "@prisma/client";
 export {}
 
 // Create a type for the roles
-export type Roles = 'admin' | 'user' | 'student_rep' | 'anonymous' | 'proffessional'
+export type Roles = 'admin' | 'user' | 'student_rep' | 'anonymous' | 'professional'
 export type Status = 'NEW' | 'PROCESSING' | 'REJECTED' | 'RESOLVED'
 export type Prediction = 'non-toxic' | 'toxic';
 
