@@ -104,15 +104,6 @@ export default function AdminDashboard() {
                 toggleSidebar()
               }}
             />
-            <NavItem
-              icon={Settings}
-              label="System Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => {
-                setActiveTab("settings")
-                toggleSidebar()
-              }}
-            />
           </nav>
         </ScrollArea>
       </aside>

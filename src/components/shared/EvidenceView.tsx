@@ -56,18 +56,6 @@ const EvidenceView = ({urls,role}: EvidenceViewProps) => {
         setVerificationError(null); // Reset previous error
 
         try {
-            // --- Simulate API Call ---
-            // Replace this with your actual fetch/axios call
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
-            const mockResponse = {
-                ok: true, // Simulate a successful response status
-                json: async () => ({ // Simulate the json() method
-                    label: "toxic",
-                    score: 0.9997726082801819,
-                    is_toxic: true
-                }),
-            };
-            // --- End Simulation ---
             let extractedText = ''
             for (const url of urls) {
                 const text = await extractText(url)
@@ -79,11 +67,11 @@ const EvidenceView = ({urls,role}: EvidenceViewProps) => {
             })
 
             // Check if the response was successful
-            if (!mockResponse.ok) { // Use !response.ok for actual fetch
-                throw new Error(`API Error: ${!mockResponse.ok || 'Verification failed'}`);
+            if (response.status !== 200) { 
+                throw new Error(`API Error: ${response.status != 200 || 'Verification failed'}`);
             }
 
-            const data: VerificationResult = await mockResponse.json(); // Use await response.json() for actual fetch
+            const data: VerificationResult = response.data as VerificationResult;
             setVerificationResult(data);
 
         } catch (error) {
@@ -127,7 +115,7 @@ const EvidenceView = ({urls,role}: EvidenceViewProps) => {
                             </div>
                         ))}
                     </div>
-                    {role == 'admin' ?
+                    {role === 'admin' || role === 'student_rep' ?
                     <Button className='mt-4' onClick={() => setIsVerifyOpen(true)}>
                         Verify Evidence
                     </Button> : null}

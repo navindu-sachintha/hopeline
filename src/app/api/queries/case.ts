@@ -439,3 +439,48 @@ export async function updateCaseStatus(caseId:string, status:CaseStatus){
         throw new Error(`Error updating case status: ${(error as Error).message}`);
     }
 }
+
+export async function getCasesByAssignedUser(userId:string){
+    try {
+        const assignCases = await prisma.caseAssignment.findMany({
+            where:{
+                userId
+            },
+            select:{
+                case:{
+                    select:{
+                        id:true,
+                        title:true,
+                        description:true,
+                        status:true,
+                        dateCreated:true,
+                        toxic:true,
+                        userId:true,
+                        reportedByUser:{
+                            select:{
+                                username:true,
+                                email:true,
+                            }
+                        },
+                        reportedByAnonymous:{
+                            select:{
+                                ipAddress:true
+                            }
+                        },
+                        Evidence:{
+                            select:{
+                                url:true,
+                                uploadedAt:true,
+                                id:true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        return assignCases
+    } catch (error) {
+        console.error(`Error getting cases for assigned user ${userId}`, error);
+        throw new Error(`Error getting cases for assigned user ${userId}`);
+    }
+}
