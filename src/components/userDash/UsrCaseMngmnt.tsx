@@ -1,12 +1,13 @@
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
 import { getStatusStyles } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 function UserCaseMngmnt() {
+    const{toast} = useToast()
     const [cases, setCases] = useState<CaseData[]>([]);
     const [loading, setLoading] = useState(true);
     const {user} =  useUser();
@@ -23,6 +24,32 @@ function UserCaseMngmnt() {
             console.error('Error getting cases', error);
         } finally{
             setLoading(false);
+        }
+    }
+
+    const deleteCase = async (caseId:string) => {
+        try {
+            const response = await axios.delete('/api/case',{
+                data:{
+                    caseId
+                }
+            })
+
+            if (response.status === 200) {
+                setCases((prev) => prev.filter((c) => c.id !== caseId));
+                toast({
+                    title: 'Case deleted',
+                    description: 'The case has been deleted successfully',
+                })
+            }
+
+        } catch (error) {
+            console.error('Error deleting case', error);
+            toast({
+                title: 'Error deleting case',
+                description: 'There was an error deleting the case',
+                variant: 'destructive'
+            })
         }
     }
 
@@ -71,6 +98,7 @@ function UserCaseMngmnt() {
                             <p>{c.incidentTypes.map((i)=> ` ${i} |`)}</p>
                         </div>
                         </div>
+                        {c.status === 'OPEN' && <Button variant='destructive' onClick={() => deleteCase(c.id)}>Delete</Button>}
                     </div>
                 ))}
             </>

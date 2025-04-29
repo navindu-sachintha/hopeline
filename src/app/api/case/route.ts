@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { createCase, getCasesByUser } from "../queries/case";
+import { createCase, deleteCase, getCasesByUser } from "../queries/case";
 import { getUserbyId } from "../queries/user";
 import { EmailService } from "@/services/email";
 
@@ -48,5 +48,21 @@ export async function GET(){
     } catch (error) {
         console.error('Error getting cases', error);
         return new Response('Error getting cases', {status: 500});
+    }
+}
+
+export async function DELETE(req:Request){
+    try {
+        const { caseId } = await req.json() as {caseId:string}
+        const del = await deleteCase(caseId)
+
+        if(del){
+            return new Response('Case deleted', {status: 200});
+        }
+        return new Response('Case not found', {status: 404});
+
+    } catch (error) {
+        console.error('Error deleting case', error);
+        return new Response('Error deleting case', {status: 500});
     }
 }
