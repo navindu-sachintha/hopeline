@@ -132,6 +132,7 @@ export async function getCasesByUser(userId: string){
                 title:true,
                 description:true,
                 status:true,
+                incidentTypes:true,
                 dateCreated:true,
                 toxic:true,
                 userId:true,
@@ -140,6 +141,12 @@ export async function getCasesByUser(userId: string){
                         url:true,
                         uploadedAt:true,
                         id:true
+                    }
+                },
+                reportedByUser:{
+                    select:{
+                        username:true,
+                        email:true,
                     }
                 }
             }
