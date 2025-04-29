@@ -13,6 +13,16 @@ export class EmailService{
             auth:{
                 user: env.SMTP_USER,
                 pass: env.SMTP_PASS
+            },
+            debug:true,
+            logger:true
+        });
+
+        this.transporter.verify((error, success) => {
+            if (error) {
+                console.error('SMTP connection verification failed:', error);
+            } else {
+                console.log('SMTP server is ready to take messages');
             }
         });
     }
@@ -202,7 +212,7 @@ export class EmailService{
                 to: email,
                 subject: `Case Rejected - ${caseTitle} - Hopeline`,
                 html: `
-                    <h1>Case Resolved</h1>
+                    <h1>Case Rejected</h1>
                     <p>Hello ${username},</p>
                     <p>Your case has been rejected. Here are the details:</p>
                     <ul>
