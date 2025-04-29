@@ -29,7 +29,7 @@ export default clerkMiddleware(
       }
 
       // redirect professional user to professional dashboard
-      if( role === 'proffessional' && req.nextUrl.pathname === '/dashboard'){
+      if( role === 'professional' && req.nextUrl.pathname === '/dashboard'){
         return NextResponse.redirect(new URL('/professional/dashboard',req.url));
       }
 
@@ -47,7 +47,11 @@ export default clerkMiddleware(
       if(isAuthRoute(req)){
         return NextResponse.redirect(
           new URL(
-            role === 'admin' ? '/admin/dashboard' : '/dashboard',
+            role === 'admin' ? '/admin/dashboard' : 
+            role === 'user' ? '/user/dashboard' :
+            role === 'professional' ? '/professional/dashboard' :
+            role === 'student_rep' ? '/studentrep/dashboard' :
+            '/dashboard',
             req.url
           )
         )
