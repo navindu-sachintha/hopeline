@@ -1,8 +1,9 @@
 "use client"
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
-import { BarChart2, FileText, PanelLeft, Settings, Users, X } from 'lucide-react'
+import { FileText, PanelLeft, X } from 'lucide-react'
 import { ScrollArea } from '../ui/scroll-area'
+import StudCaseMngmnt from './StudCaseMngmnt'
 
 export default function StudentRepDashboard() {
     const [activeTab, setActiveTab] = useState("cases")
@@ -27,12 +28,8 @@ export default function StudentRepDashboard() {
 
     const renderContent = () => {
         switch (activeTab) {
-          case "account":
-            return <div>Hi</div>
           case "cases":
-            return <div>Hello</div>
-          case "analytics":
-            return <div>Kohomada</div>
+            return <StudCaseMngmnt />
           default:
             return null
         }
@@ -45,27 +42,9 @@ export default function StudentRepDashboard() {
           <nav className="space-y-2">
             <NavItem
               icon={FileText}
-              label="Reported Cases"
+              label="Assigned Cases"
               isActive={activeTab === "cases"}
               onClick={() => setActiveTab("cases")}
-            />
-            <NavItem
-              icon={BarChart2}
-              label="Analytics"
-              isActive={activeTab === "analytics"}
-              onClick={() => setActiveTab("analytics")}
-            />
-            <NavItem
-              icon={Users}
-              label="Account"
-              isActive={activeTab === "account"}
-              onClick={() => setActiveTab("account")}
-            />
-            <NavItem
-              icon={Settings}
-              label="System Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => setActiveTab("settings")}
             />
           </nav>
         </ScrollArea>
@@ -82,39 +61,12 @@ export default function StudentRepDashboard() {
           <nav className="space-y-2">
             <NavItem
               icon={FileText}
-              label="Case Management"
+              label="Assigned Cases"
               isActive={activeTab === "cases"}
               onClick={() => {
                   setActiveTab("cases")
                   toggleSidebar()
                 }}
-            />
-                <NavItem
-                  icon={Users}
-                  label="User Management"
-                  isActive={activeTab === "users"}
-                  onClick={() => {
-                    setActiveTab("users")
-                    toggleSidebar()
-                  }}
-                />
-            <NavItem
-              icon={BarChart2}
-              label="Analytics"
-              isActive={activeTab === "analytics"}
-              onClick={() => {
-                setActiveTab("analytics")
-                toggleSidebar()
-              }}
-            />
-            <NavItem
-              icon={Settings}
-              label="System Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => {
-                setActiveTab("settings")
-                toggleSidebar()
-              }}
             />
           </nav>
         </ScrollArea>

@@ -60,7 +60,15 @@ const CaseVIew = ({incident, role}:CaseAdminVIewProps) => {
           </div>
         </section>
         <EvidenceView role={role} urls={incident.Evidence.map((e) => e.url)}/>
-        <CaseActionView caseId={incident.id} role={role} />
+        {(role === 'student_rep' || role === 'professional' || role === 'admin') && (
+          <CaseActionView 
+            repeorterEmail={incident.reportedByUser ? incident.reportedByUser.email : incident.reportedByAnonymous.ipAddress}
+            caseTitle={incident.title}
+            username={incident.reportedByUser ? incident.reportedByUser.username : 'Anonymous'}
+            caseStatus={incident.status} 
+            caseId={incident.id} 
+            role={role} />
+        )}
       </div>
     </div>
   )

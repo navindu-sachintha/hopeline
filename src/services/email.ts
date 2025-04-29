@@ -122,4 +122,102 @@ export class EmailService{
             return false;
         }
     }
+
+    async sendMeetingLink(options:{
+        username:string;
+        caseId: string;
+        caseTitle: string;
+        meetingLink: string;
+        email: string;
+    }):Promise<boolean>{
+        try {
+            const {username, caseId, caseTitle, meetingLink, email} = options;
+            await this.sendEmail({
+                to: email,
+                subject: `Meeting link for case - ${caseTitle} - Hopeline`,
+                html: `
+                    <h1>Meeting Link</h1>
+                    <p>Hello ${username},</p>
+                    <p>Your meeting link for the case is ready. Here are the details:</p>
+                    <ul>
+                        <li>Case ID: ${caseId}</li>
+                        <li>Case Title: ${caseTitle}</li>
+                        <li>Meeting Link: ${meetingLink}</li>
+                    </ul>
+                    <p>Thank you for trustiing Hopeline!</p>
+                
+                `
+            })
+            return true;
+        } catch (error) {
+            console.error('Failed to send meeting link email:', error);
+            return false;
+        }
+    }
+
+    async sendResolveConfirmation(options:{
+        username:string;
+        caseId: string;
+        caseTitle: string;
+        email: string;
+        resolution: string;
+    }):Promise<boolean>{
+        try {
+            const {username, caseId, caseTitle, email, resolution} = options;
+            
+            await this.sendEmail({
+                to: email,
+                subject: `Case Resolved - ${caseTitle} - Hopeline`,
+                html: `
+                    <h1>Case Resolved</h1>
+                    <p>Hello ${username},</p>
+                    <p>Your case has been resolved. Here are the details:</p>
+                    <ul>
+                        <li>Case ID: ${caseId}</li>
+                        <li>Case Title: ${caseTitle}</li>
+                        <li>Resolution: ${resolution}</li>
+                    </ul>
+                    <p>Thank you for trusting Hopeline!</p>
+                `
+            })
+
+            return true;
+        } catch (error) {
+            console.error('Failed to send case resolved email:', error);
+            return false
+        }
+    }
+
+    async sendRejectConfirmation(options:{
+        username:string;
+        caseId: string;
+        caseTitle: string;
+        email: string;
+        rejection: string;
+    }):Promise<boolean>{
+        try {
+            const {username, caseId, caseTitle, email, rejection} = options;
+            
+            await this.sendEmail({
+                to: email,
+                subject: `Case Rejected - ${caseTitle} - Hopeline`,
+                html: `
+                    <h1>Case Resolved</h1>
+                    <p>Hello ${username},</p>
+                    <p>Your case has been rejected. Here are the details:</p>
+                    <ul>
+                        <li>Case ID: ${caseId}</li>
+                        <li>Case Title: ${caseTitle}</li>
+                        <li>Rejection: ${rejection}</li>
+                    </ul>
+                    <p>Thank you for trusting Hopeline!</p>
+                `
+            })
+
+            return true;
+        } catch (error) {
+            console.error('Failed to send case resolved email:', error);
+            return false
+        }
+    }
 }

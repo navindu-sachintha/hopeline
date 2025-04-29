@@ -15,6 +15,7 @@ export const env = createEnv({
     SMTP_HOST: z.string(),
     SMTP_USER: z.string(),
     SMTP_PASS: z.string(),
+    AI_INFERENCE_ENDPOINT: z.string(),
   },
 
   /**
@@ -43,6 +44,7 @@ export const env = createEnv({
     SMTP_PASS: process.env.SMTP_PASS,
     NEXT_PUBLIC_ANONYMOUS_REPORT_API_ENPOINT: process.env.NEXT_PUBLIC_ANONYMOUS_REPORT_API_ENPOINT,
     NEXT_PUBLIC_REPORT_API_ENPOINT: process.env.NEXT_PUBLIC_REPORT_API_ENPOINT,
+    AI_INFERENCE_ENDPOINT: process.env.AI_INFERENCE_ENDPOINT,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

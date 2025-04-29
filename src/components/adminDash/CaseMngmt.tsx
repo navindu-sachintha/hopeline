@@ -9,6 +9,7 @@ import { Label } from '../ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { useRouter } from 'next/navigation'
 import { CaseAssignment } from '../shared/CaseAssignment'
+import { getStatusStyles } from '@/lib/utils'
 
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
@@ -100,7 +101,7 @@ const CaseMngmt = () => {
               <TableCell>{c.title}</TableCell>
               <TableCell>
               <span
-                  className={`px-2 py-1 rounded-full text-xs font-semibold ${c.status === CaseStatus.OPEN ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                  className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusStyles(c.status)}`}
               >
                 {c.status}
               </span>
@@ -109,12 +110,12 @@ const CaseMngmt = () => {
               <TableCell>{c.reportedByUser ? c.reportedByUser.email : `IP Address: ${c.reportedByAnonymous.ipAddress}`}</TableCell>
               <TableCell>{new Date(c.dateCreated).toLocaleDateString()}</TableCell>
               <TableCell>
-                {c.status === 'OPEN' && (
-                  <CaseAssignment caseId={c.id} caseTitle={c.title}/>
-                )}
                 <Button variant='link' onClick={() => router.push(`/case/${c.id}`)}>
                   View
                 </Button>
+                {c.status === 'OPEN' && c.reportedByUser && (
+                  <CaseAssignment caseId={c.id} caseTitle={c.title}/>
+                )}
               </TableCell>
             </TableRow>
           ))}

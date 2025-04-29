@@ -32,7 +32,7 @@ export default function Case({params}:{
     if(caseData === null) return <p>Loading...</p>
     
   return (
-    <div>
+    <div className="mx-3">
         <CaseVIew incident={caseData} role={role}/>
     </div>
   )
