@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
-import { BarChart2, FileText, PanelLeft, Settings, Users, X } from 'lucide-react'
+import { FileText, PanelLeft, X } from 'lucide-react'
 import { ScrollArea } from '../ui/scroll-area'
 import ProCaseMngmnt from './ProCaseMngmnt'
 
