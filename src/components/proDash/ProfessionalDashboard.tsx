@@ -42,15 +42,9 @@ export default function ProfessionalDashboard() {
           <nav className="space-y-2">
             <NavItem
               icon={FileText}
-              label="Reported Cases"
+              label="Assigned Cases"
               isActive={activeTab === "cases"}
               onClick={() => setActiveTab("cases")}
-            />
-            <NavItem
-              icon={BarChart2}
-              label="Analytics"
-              isActive={activeTab === "analytics"}
-              onClick={() => setActiveTab("analytics")}
             />
 
           </nav>
@@ -68,39 +62,12 @@ export default function ProfessionalDashboard() {
           <nav className="space-y-2">
             <NavItem
               icon={FileText}
-              label="Case Management"
+              label="Assigned Cases"
               isActive={activeTab === "cases"}
               onClick={() => {
                   setActiveTab("cases")
                   toggleSidebar()
                 }}
-            />
-                <NavItem
-                  icon={Users}
-                  label="User Management"
-                  isActive={activeTab === "users"}
-                  onClick={() => {
-                    setActiveTab("users")
-                    toggleSidebar()
-                  }}
-                />
-            <NavItem
-              icon={BarChart2}
-              label="Analytics"
-              isActive={activeTab === "analytics"}
-              onClick={() => {
-                setActiveTab("analytics")
-                toggleSidebar()
-              }}
-            />
-            <NavItem
-              icon={Settings}
-              label="System Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => {
-                setActiveTab("settings")
-                toggleSidebar()
-              }}
             />
           </nav>
         </ScrollArea>
