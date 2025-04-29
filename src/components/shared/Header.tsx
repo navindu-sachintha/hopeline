@@ -69,9 +69,17 @@ export default function Component() {
             >
               Sign Out
             </Button>
-          )
-
-          }
+          )}
+          {!isSignedIn && (
+            <Link href="/sign-in" onClick={() => setOpen(false)}>
+              <Button
+                variant='default'
+                className="mt-auto mb-4 text-sm font-medium w-full"
+              >
+                Sign In
+              </Button>
+            </Link>
+          )}
           </nav>
           
         </SheetContent>
