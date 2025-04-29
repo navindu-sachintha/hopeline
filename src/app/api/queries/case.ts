@@ -212,6 +212,11 @@ export async function deleteCase(id:string){
                 })
             )
         }
+        await prisma.caseAssignment.deleteMany({
+            where:{
+                caseId: id
+            }
+        })
         await prisma.evidence.deleteMany({
             where:{
                 caseId: id
