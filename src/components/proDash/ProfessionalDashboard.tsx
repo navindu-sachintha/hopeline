@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import { BarChart2, FileText, PanelLeft, Settings, Users, X } from 'lucide-react'
 import { ScrollArea } from '../ui/scroll-area'
+import ProCaseMngmnt from './ProCaseMngmnt'
 
 export default function ProfessionalDashboard() {
     const [activeTab, setActiveTab] = useState("cases")
@@ -27,12 +28,8 @@ export default function ProfessionalDashboard() {
 
     const renderContent = () => {
         switch (activeTab) {
-          case "account":
-            return <div>Hi</div>
           case "cases":
-            return <div>Hello</div>
-          case "analytics":
-            return <div>Kohomada</div>
+            return <ProCaseMngmnt />
           default:
             return null
         }
@@ -55,18 +52,7 @@ export default function ProfessionalDashboard() {
               isActive={activeTab === "analytics"}
               onClick={() => setActiveTab("analytics")}
             />
-            <NavItem
-              icon={Users}
-              label="Account"
-              isActive={activeTab === "account"}
-              onClick={() => setActiveTab("account")}
-            />
-            <NavItem
-              icon={Settings}
-              label="System Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => setActiveTab("settings")}
-            />
+
           </nav>
         </ScrollArea>
       </aside>
