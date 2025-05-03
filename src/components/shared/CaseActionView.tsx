@@ -15,8 +15,9 @@ interface CaseActionViewProps {
     username:string;
     caseTitle: string;
     repeorterEmail: string;
+    anonymous:boolean
 }
-const CaseActionView = ({caseId, role, caseStatus, username, caseTitle, repeorterEmail}:CaseActionViewProps) => {
+const CaseActionView = ({caseId, role, caseStatus, username, caseTitle, repeorterEmail, anonymous}:CaseActionViewProps) => {
   const {toast} = useToast()
   const [isSendMeetingOpen, setIsSendMeetingOpen] = useState(false)
   const [isRejectOpen, setIsRejectOpen] = useState(false)
@@ -137,12 +138,12 @@ const CaseActionView = ({caseId, role, caseStatus, username, caseTitle, repeorte
         Resolve Case
       </Button>
 
-      <SendMeetingLinkDialog
+      {anonymous && <SendMeetingLinkDialog
         open={isSendMeetingOpen}
         onOpenChange={setIsSendMeetingOpen}
         onConfirm={handleSendMeeting}
         isLoading={isLoading}
-      />
+      />}
 
       <RejectCaseDialog
         open={isRejectOpen}
