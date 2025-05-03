@@ -119,7 +119,7 @@ const CaseActionView = ({caseId, role, caseStatus, username, caseTitle, repeorte
         <div className="flex flex-wrap gap-3 mt-4">
       <Button 
         onClick={() => setIsSendMeetingOpen(true)} 
-        disabled={isLoading || caseStatus === 'RESOLVED' || caseStatus === 'REJECTED'}>
+        disabled={isLoading || caseStatus === 'RESOLVED' || caseStatus === 'REJECTED' || anonymous}>
         Send Meeting Link
       </Button>
 
@@ -138,12 +138,12 @@ const CaseActionView = ({caseId, role, caseStatus, username, caseTitle, repeorte
         Resolve Case
       </Button>
 
-      {anonymous && <SendMeetingLinkDialog
+      <SendMeetingLinkDialog
         open={isSendMeetingOpen}
         onOpenChange={setIsSendMeetingOpen}
         onConfirm={handleSendMeeting}
         isLoading={isLoading}
-      />}
+      />
 
       <RejectCaseDialog
         open={isRejectOpen}
