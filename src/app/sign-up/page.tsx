@@ -15,8 +15,6 @@ import { Button } from '@/components/ui/button'
 const SignUp = () => {
     const {isLoaded, signUp, setActive} = useSignUp();
 
-    // remove emailRegex after development
-    const nsbmEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*nsbm\.ac\.lk$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     const [email, setEmail] = useState('');
@@ -123,7 +121,7 @@ const SignUp = () => {
                   onChange={(e) => {
                     setEmail(e.target.value);
                     if (!validateEmail(e.target.value) && e.target.value) {
-                      setError('Please use a valid NSBM email address (@*.nsbm.ac.lk)');
+                      setError('Please use a valid email address');
                     } else {
                       setError('');
                     }
