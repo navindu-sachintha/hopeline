@@ -26,14 +26,14 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const nsbmEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*nsbm\.ac\.lk$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!isLoaded) {
     return null;
   }
 
     const validateEmail = (email: string) => {
-        return nsbmEmailRegex.test(email);
+        return emailRegex.test(email);
     };
 
   async function submit(e: React.FormEvent) {
@@ -81,7 +81,7 @@ export default function SignIn() {
                 onChange={(e) => {
                     setEmail(e.target.value);
                     if (!validateEmail(e.target.value) && e.target.value) {
-                      setError('Please use a valid NSBM email address (@*.nsbm.ac.lk)');
+                      setError('Please use a Valid email address');
                     } else {
                       setError('');
                     }
