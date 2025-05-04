@@ -139,9 +139,10 @@ export class EmailService{
         caseTitle: string;
         meetingLink: string;
         email: string;
+        date: string
     }):Promise<boolean>{
         try {
-            const {username, caseId, caseTitle, meetingLink, email} = options;
+            const {username, caseId, caseTitle, meetingLink, email, date} = options;
             await this.sendEmail({
                 to: email,
                 subject: `Meeting link for case - ${caseTitle} - Hopeline`,
@@ -153,8 +154,9 @@ export class EmailService{
                         <li>Case ID: ${caseId}</li>
                         <li>Case Title: ${caseTitle}</li>
                         <li>Meeting Link: ${meetingLink}</li>
+                        <li> Date and Time: ${date} </li>
                     </ul>
-                    <p>Thank you for trustiing Hopeline!</p>
+                    <p>Thank you for trusting Hopeline!</p>
                 
                 `
             })

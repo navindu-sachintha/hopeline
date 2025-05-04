@@ -67,7 +67,8 @@ const CaseVIew = ({incident, role}:CaseAdminVIewProps) => {
             username={incident.reportedByUser ? incident.reportedByUser.username : 'Anonymous'}
             caseStatus={incident.status} 
             caseId={incident.id} 
-            role={role} />
+            role={role}
+            anonymous={!incident.reportedByUser} />
         )}
       </div>
     </div>
