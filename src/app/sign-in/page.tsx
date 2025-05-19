@@ -86,7 +86,7 @@ export default function SignIn() {
                       setError('');
                     }
                   }}
-                  placeholder="Enter your NSBM email"
+                  placeholder="Enter your email"
                   required
               />
             </div>
