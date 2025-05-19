@@ -9,7 +9,7 @@ import { Label } from '../ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { useRouter } from 'next/navigation'
 import { CaseAssignment } from '../shared/CaseAssignment'
-import { getStatusStyles } from '@/lib/utils'
+import { cn, getStatusStyles } from '@/lib/utils'
 
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
@@ -101,9 +101,12 @@ const CaseMngmt = () => {
               <TableCell>{c.title}</TableCell>
               <TableCell>
               <span
-                  className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusStyles(c.status)}`}
+                  className={cn(
+                    getStatusStyles(c.status),
+                    "px-2 py-1 rounded-full text-xs font-semibold"
+                  )}
               >
-                {c.status}
+                  {c.status}
               </span>
               </TableCell>
               <TableCell>{c.reportedByUser ? c.reportedByUser.username : 'Anonymous'}</TableCell>

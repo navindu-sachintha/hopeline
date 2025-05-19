@@ -126,7 +126,7 @@ const SignUp = () => {
                       setError('');
                     }
                   }}
-                  placeholder="Enter your NSBM email"
+                  placeholder="Enter your email"
                   required
                 />
               </div>
