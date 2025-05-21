@@ -119,12 +119,6 @@ export default function ContactUs() {
               </Button>
             </div>
           </section>
-
-          <div className="border-t pt-6">
-            <p className="text-sm text-muted-foreground text-center">
-              The Hopeline team is committed to responding to all inquiries within 24-48 hours during business days.
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
