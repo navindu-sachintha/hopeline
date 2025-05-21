@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold">2. Information We Collect</h2>
             <h3 className="text-xl font-medium">2.1 Information you provide to us</h3>
             <ul className="list-disc pl-6 space-y-1">
-              <li>Personal information (name, email address, contact details)</li>
+              <li>Personal information (email address, contact details)</li>
               <li>Account information when you register</li>
               <li>Reports of cyberbullying or harassment incidents</li>
               <li>Evidence uploads related to reported cases</li>
@@ -53,7 +53,6 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 space-y-1">
               <li>Encryption of sensitive data</li>
-              <li>Regular security assessments</li>
               <li>Access controls and authentication procedures</li>
               <li>Secure storage of evidence uploads</li>
             </ul>
@@ -72,48 +71,21 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-2xl font-semibold">6. Data Retention</h2>
-            <p>
-              We retain your personal information only for as long as necessary to fulfill the purposes outlined in this privacy policy, unless a longer retention period is required by law. Case information may be retained for longer periods to support ongoing investigations or as required by regulatory compliance.
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h2 className="text-2xl font-semibold">7. Your Rights</h2>
-            <p>Depending on your location, you may have the following rights:</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>Access to your personal information</li>
-              <li>Correction of inaccurate data</li>
-              <li>Deletion of your personal information</li>
-              <li>Restriction or objection to processing</li>
-              <li>Data portability</li>
-              <li>Withdrawal of consent</li>
-            </ul>
-          </section>
-
-          <section className="space-y-2">
-            <h2 className="text-2xl font-semibold">8. Cookies and Tracking</h2>
+            <h2 className="text-2xl font-semibold">6. Cookies and Tracking</h2>
             <p>
               We use cookies and similar tracking technologies to enhance your experience on our platform. You can manage cookie preferences through your browser settings.
             </p>
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-2xl font-semibold">9. Third-Party Services</h2>
-            <p>
-              Our platform may contain links to third-party websites or services. We are not responsible for the privacy practices of these third parties. We encourage you to read the privacy policies of any third-party services you interact with.
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h2 className="text-2xl font-semibold">10. Changes to This Privacy Policy</h2>
+            <h2 className="text-2xl font-semibold">7. Changes to This Privacy Policy</h2>
             <p>
               We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last Updated&quot; date. You are advised to review this Privacy Policy periodically for any changes.
             </p>
           </section>
 
           <section className="space-y-2">
-            <h2 className="text-2xl font-semibold">11. Contact Us</h2>
+            <h2 className="text-2xl font-semibold">8. Contact Us</h2>
             <p>
               If you have any questions about this Privacy Policy, please contact us at:
             </p>
