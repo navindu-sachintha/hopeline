@@ -176,17 +176,23 @@ const EvidenceView = ({urls,role}: EvidenceViewProps) => {
 
                     {/* Image Popup Dialog */}
                     <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-                        <DialogContent className="max-w-[90vw] h-[90vh] p-0">
+                        <DialogContent className="max-w-[90vw] max-h-[90vh] p-4 overflow-hidden">
                             {selectedImage && (
                                 <>
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <Image
-                                            src={selectedImage}
-                                            alt="Selected evidence"
-                                            className="max-w-full max-h-full object-contain"
-                                            width={1000}
-                                            height={1000}
-                                        />
+                                    <div className="relative w-full h-full flex items-center justify-center">
+                                        <div className="max-w-full max-h-[calc(90vh-60px)] overflow-hidden">
+                                            <Image
+                                                src={selectedImage}
+                                                alt="Selected evidence"
+                                                className="w-auto h-auto object-contain"
+                                                width={1000}
+                                                height={1000}
+                                                style={{
+                                                    maxWidth: '100%',
+                                                    maxHeight: 'calc(90vh - 80px)',
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                     {/* Navigation Buttons */}
                                     <div className="absolute inset-0 flex items-center justify-between p-4">
