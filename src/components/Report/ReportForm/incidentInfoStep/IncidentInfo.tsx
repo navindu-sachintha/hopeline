@@ -119,7 +119,7 @@ export default function IncidentInfo({ formData, updateFormData, errors }: Incid
       </div>
 
       <div>
-        <Label htmlFor="reporterConnection">Reporter Connection</Label>
+        <Label htmlFor="reporterConnection">Reporter Connection to the university</Label>
         <Select
           value={formData.reporterConnection}
           onValueChange={(value) => updateFormData({ reporterConnection: value })}
@@ -139,7 +139,7 @@ export default function IncidentInfo({ formData, updateFormData, errors }: Incid
       </div>
 
       <div>
-        <Label htmlFor="affectedConnection">Affected Person Connection</Label>
+        <Label htmlFor="affectedConnection">Affected Person Connection to the university</Label>
         <Select
           value={formData.affectedConnection}
           onValueChange={(value) => updateFormData({ affectedConnection: value })}
@@ -159,7 +159,7 @@ export default function IncidentInfo({ formData, updateFormData, errors }: Incid
       </div>
 
       <div>
-        <Label htmlFor="perpetratorConnection">Perpetrator Connection</Label>
+        <Label htmlFor="perpetratorConnection">Perpetrator Connection to the university</Label>
         <Select
           value={formData.perpetratorConnection}
           onValueChange={(value) => updateFormData({ perpetratorConnection: value })}
