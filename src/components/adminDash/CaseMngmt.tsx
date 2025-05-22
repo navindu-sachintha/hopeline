@@ -14,7 +14,7 @@ import { cn, getStatusStyles } from '@/lib/utils'
 const CaseMngmt = () => {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
-  const [limit, setLimit] = useState(5)
+  const [limit, setLimit] = useState(20)
   const [status, setStatus] = useState<CaseStatus>(CaseStatus.OPEN)
   const [totalPages, setTotalPages] = useState(1)
   const [cases, setCases] = useState<CaseData[]>([])
