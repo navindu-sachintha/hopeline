@@ -361,6 +361,9 @@ export async function getFilteredCasesPaginated(
                             id:true
                         }
                     }
+                },
+                orderBy:{
+                    dateCreated: 'desc'
                 }
             }),
             prisma.case.count()
